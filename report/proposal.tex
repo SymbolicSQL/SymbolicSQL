@@ -18,10 +18,6 @@ SQL is a commonly used data query language for database systems. Due to the rich
 
 To address these challenges, we consider building the formal semantics of SQL in Rosette and employing automatic verification techniques to reason about it. Particularly, we consider the following two applications: 1) bounded checking equivalence of two SQL queries to help verify the correctness of SQL rewriting rules (or provide counter examples when exist), and 2) SQL synthesis based on partially correct queries and counter examples, i.e. help user to correct their wrong queries using counter examples.
 
-\section{Related Work}
-
-Qex~\cite{veanes2010qex}
-
 \section{Introduction}
 
 \subsection{Verifying query rewriting}
@@ -35,6 +31,11 @@ For complex query rewriting, we may need to bound the size and arity of the
  relation. Then the verification will not be complete but not sound. 
 However, we believe that being able to find counter example in bounded case is 
 still helpful compared with manually reasoning. 
+
+
+\section{Related Work}
+
+Qex~\cite{veanes2010qex,veanes2009symbolic} is a tool to generate tables based on parameterized SQL queries for database system test purpose. Concretely, Qex takes an paremeterized SQL query as well as a SQL property as inputs, it will then generate a full SQL query as well as a table instance satisfying the property for database unit test. Qex has build the background theory for SQL queries and is able to translate a SQL query into SMT formulas. Our project uses the same reasoning method as Qex do, but for different application scenerio, i.e. SQL semantics checking.
 
 \bibliography{proposal}{}
 \bibliographystyle{plain}

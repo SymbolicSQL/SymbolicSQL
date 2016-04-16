@@ -1,5 +1,11 @@
 \begin{thebibliography}{1}
 
+\bibitem{veanes2009symbolic}
+Margus Veanes, Pavel Grigorenko, Peli De~Halleux, and Nikolai Tillmann.
+\newblock Symbolic query exploration.
+\newblock In {\em Formal Methods and Software Engineering}, pages 49--68.
+  Springer, 2009.
+
 \bibitem{veanes2010qex}
 Margus Veanes, Nikolai Tillmann, and Jonathan De~Halleux.
 \newblock Qex: Symbolic sql query explorer.

@@ -1,13 +1,14 @@
 # Fdb version 3
-["bibtex proposal"] 1460764932 "proposal.aux" "proposal.bbl" "proposal" 1460764933
+["bibtex proposal"] 1460766447 "proposal.aux" "proposal.bbl" "proposal" 1460766447
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "proposal.aux" 1460764933 1028 6eb47ccca420fc2089a3b095c71e94fc ""
+  "proposal.aux" 1460766447 1079 a76ef49b42043bfc6207cc290eb89530 ""
   "proposal.bcf" 1460764777 100537 959dc9e0f4938403eb44678e5ae859e9 ""
-  "proposal.bib" 1460764433 287 510148519be25ea92babf007f805867d ""
+  "proposal.bib" 1460765288 565 4a69ec2cec2374ad9e412eb2712e2f07 ""
   (generated)
   "proposal.bbl"
-["pdflatex"] 1460764932 "proposal.tex" "proposal.pdf" "proposal" 1460764933
-  "./proposal.out" 1460764933 168 9bbe6c6ba6ed875b4ed2591ed0c62ffb ""
+  "proposal.blg"
+["pdflatex"] 1460766447 "proposal.tex" "proposal.pdf" "proposal" 1460766447
+  "./proposal.out" 1460766447 168 29ef30874aeeb3d7939c611e443fdf23 ""
   "/usr/local/texlive/2015/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
@@ -64,14 +65,14 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "proposal.aux" 1460764933 1028 6eb47ccca420fc2089a3b095c71e94fc ""
-  "proposal.bbl" 1460764932 293 db14c94216fa88b9e75f9f843fa3a08e "bibtex proposal"
-  "proposal.out" 1460764933 168 9bbe6c6ba6ed875b4ed2591ed0c62ffb ""
-  "proposal.tex" 1460764931 2199 f8f4c9ef671f0cf19dd14fb88921812f ""
+  "proposal.aux" 1460766447 1079 a76ef49b42043bfc6207cc290eb89530 ""
+  "proposal.bbl" 1460766447 525 6ce2f307cfba7c0875be80da27e707f0 "bibtex proposal"
+  "proposal.out" 1460766447 168 29ef30874aeeb3d7939c611e443fdf23 ""
+  "proposal.tex" 1460766445 2749 9b87220387d5c311c20af229f9896a9e ""
   (generated)
+  "proposal.log"
+  "proposal.aux"
+  "proposal.bcf"
+  "proposal.run.xml"
   "proposal.pdf"
   "proposal.out"
-  "proposal.log"
-  "proposal.run.xml"
-  "proposal.bcf"
-  "proposal.aux"
