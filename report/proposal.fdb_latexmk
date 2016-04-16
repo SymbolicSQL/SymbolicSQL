@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex proposal"] 1460783030 "proposal.aux" "proposal.bbl" "proposal" 1460783031
+["bibtex proposal"] 1460783030 "proposal.aux" "proposal.bbl" "proposal" 1460784067
   "/usr/local/texlive/2015/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
   "proposal.aux" 1460783031 1732 da26084d22bea93bda50439b859c7698 ""
   "proposal.bcf" 0 -1 0 ""
   "proposal.bib" 1460781382 2406 131f36003d7679324d411be46be5733c ""
   (generated)
-  "proposal.bbl"
   "proposal.blg"
-["pdflatex"] 1460783030 "proposal.tex" "proposal.pdf" "proposal" 1460783031
+  "proposal.bbl"
+["pdflatex"] 1460783030 "proposal.tex" "proposal.pdf" "proposal" 1460784067
   "./proposal.out" 1460783031 153 0bada4dc8105509a16b8fa027a2f4ebe ""
   "/usr/local/texlive/2015/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -79,9 +79,9 @@
   "proposal.out" 1460783031 153 0bada4dc8105509a16b8fa027a2f4ebe ""
   "proposal.tex" 1460783029 5594 dc6ed2b714b96d7109cc6a75ab83bd62 ""
   (generated)
-  "proposal.aux"
-  "proposal.log"
-  "proposal.bcf"
-  "proposal.run.xml"
   "proposal.pdf"
+  "proposal.bcf"
+  "proposal.log"
+  "proposal.run.xml"
   "proposal.out"
+  "proposal.aux"
