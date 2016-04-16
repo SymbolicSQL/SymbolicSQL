@@ -5,6 +5,10 @@
 \usepackage{hyperref}
 \usepackage{fullpage}
 \usepackage{cite}
+\usepackage{xcolor}
+\usepackage{inconsolata}
+
+\newcommand\note[1]{\textcolor{red}{NOTE: #1}}
 
 \begin{document}
 
@@ -31,6 +35,26 @@ For complex query rewriting, we may need to bound the size and arity of the
  relation. Then the verification will not be complete but not sound. 
 However, we believe that being able to find counter example in bounded case is 
 still helpful compared with manually reasoning. 
+
+\section{Overview of This Project}
+In this project, we are planning to implement a SQL query equivalence verifier
+to validate the equivalence of two SQL queries under certain database schemas.
+The final product of this project should be a tool that takes the database schema
+definition and two SQL queries, either in the string form or in the parsed AST form, 
+as the input, and determine whether these two queries are equivalent under the given
+database schema.
+
+As for a general plan, we will first use the similar method as Qex~\cite{veanes2010qex,veanes2009symbolic} did
+to formalize the semantic of SQL queries and database schemas.
+Then we plan to implement a symbolic execution engine for SQL queries as a prototype 
+either by using symbolic engines like Rosette~\cite{torlak2014lightweight} 
+or using SMT solvers like z3.
+We will try to run some sample queries on the prototype to profile the performance of the
+prototype and see how well it can scale.
+After that, we may also apply some optimization methods the equivalent verifier 
+or even push further by implementing our own theory module for SQL queries for SMT solvers.
+\note{This will not happen}
+
 
 
 \section{Related Work}
