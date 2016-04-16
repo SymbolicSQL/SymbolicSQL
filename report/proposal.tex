@@ -39,25 +39,36 @@ As SQL query equivalence checking is generally undecidable, we plan to bound the
 Furthermore, with the equivalence checker, we can help synthesize rewriting rules that are guaranteed to be semantics preserving with embedded constraints on a database. Since developing these conditionally semantics-preserving rewriting rules is a common challenge for humans, automatically generate such rules can further exploit SQL optimization performance.
 
 \section{Overview of This Project}
+\subsection{The proposed system}
 In this project, we are planning to implement a SQL query equivalence verifier
 to validate the equivalence of two SQL queries under certain database schemas.
 The final product of this project should be a tool that takes the database schema
 definition and two SQL queries, either in the string form or in the parsed AST form, 
 as the input, and determine whether these two queries are equivalent under the given
-database schema.
+database schema. 
+Furthermore, if the given SQL queries are not equivalent, the verifier will return a concrete
+counter example of when the result of the two queries diverge as a guide line for the user
+as a guideline to correct the mistakes in either the query design or schema design.
 
-As for a general plan, we will first use the similar method as Qex~\cite{veanes2010qex,veanes2009symbolic} did
-to formalize the semantic of SQL queries and database schemas.
+\subsection{A General Plan of the Project}
+Here we will give a general plan of this project, which will be used as a guidance for our
+project progress.
+We will first try to use the similar method as Qex~\cite{veanes2010qex,veanes2009symbolic} did
+to formalize the semantic of SQL queries and database schemas, this will involve both how to 
+have a formal sepcification of the SQL semantic and how to encode the semantic effciently for
+SMT solvers.
 Then we plan to implement a symbolic execution engine for SQL queries as a prototype 
 either by using symbolic engines like Rosette~\cite{torlak2014lightweight} 
-or using SMT solvers like z3.
-We will try to run some sample queries on the prototype to profile the performance of the
-prototype and see how well it can scale.
-After that, we may also apply some optimization methods the equivalent verifier 
-or even push further by implementing our own theory module for SQL queries for SMT solvers.
-\note{This will not happen}
+or using SMT solvers like z3, and will have some unit tests on the prototype as
+a proof-of-idea and a preliminary performance evaluation.
 
-
+% optional
+Since the real world SQL queries then to be much larger in size, a naive approach of feeding everything
+to the SMT solver may not work very well.
+We may push further on the performance of the verifier by either having a better encoding or dig deeper
+into the SMT solver to implement SQL theory modules for them.
+On the other hand, we may also work on expand the user experience by make use of the synthesize functionality
+of Rosette to give a possible correction of the SQL query if the given inputs are not equivalent.
 
 \section{Related Work}
 
