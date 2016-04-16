@@ -7,6 +7,7 @@
 \usepackage{cite}
 
 \begin{document}
+
 \title{Symbolic Reasoning for SQL Queries}
 \author{Chenglong Wang, Kaiyuan Zhang and Shumo Chu}
 \date{}
@@ -17,11 +18,12 @@ SQL is a commonly used data query language for database systems. Due to the rich
 
 To address these challenges, we consider building the formal semantics of SQL in Rosette and employing automatic verification techniques to reason about it. Particularly, we consider the following two applications: 1) bounded checking equivalence of two SQL queries to help verify the correctness of SQL rewriting rules (or provide counter examples when exist), and 2) SQL synthesis based on partially correct queries and counter examples, i.e. help user to correct their wrong queries using counter examples.
 
-\section{Motivation}
+\section{Related Work}
 
-\section{Model}
+Qex~\cite{veanes2010qex}
 
-\section{Application}
+\section{Introduction}
+
 \subsection{Verifying query rewriting}
 Rewriting SQL query to equivalent queries is an essential part of query
 optimizer. Reasoning the correctness of complicated rewriting rigorously 
@@ -34,6 +36,7 @@ For complex query rewriting, we may need to bound the size and arity of the
 However, we believe that being able to find counter example in bounded case is 
 still helpful compared with manually reasoning. 
 
-\subsection{}
+\bibliography{proposal}{}
+\bibliographystyle{plain}
 
 \end{document}
