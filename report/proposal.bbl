@@ -1,5 +1,16 @@
 \begin{thebibliography}{1}
 
+\bibitem{Chakravarthy:1990:LAS:78922.78924}
+Upen~S. Chakravarthy, John Grant, and Jack Minker.
+\newblock Logic-based approach to semantic query optimization.
+\newblock {\em ACM Trans. Database Syst.}, 15(2):162--207, June 1990.
+
+\bibitem{chirkova2009equivalence}
+Rada Chirkova and Michael~R Genesereth.
+\newblock Equivalence of sql queries in presence of embedded dependencies.
+\newblock In {\em Proceedings of the twenty-eighth ACM SIGMOD-SIGACT-SIGART
+  symposium on Principles of database systems}, pages 217--226. ACM, 2009.
+
 \bibitem{veanes2009symbolic}
 Margus Veanes, Pavel Grigorenko, Peli De~Halleux, and Nikolai Tillmann.
 \newblock Symbolic query exploration.

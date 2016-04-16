@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: proposal.aux
 The style file: plain.bst
 Database file #1: proposal.bib
-You've used 2 entries,
+You've used 4 entries,
             2118 wiz_defined-function locations,
-            509 strings with 4348 characters,
-and the built_in function-call counts, 1006 in all, are:
-= -- 105
-> -- 41
-< -- 2
-+ -- 16
-- -- 14
-* -- 64
-:= -- 153
-add.period$ -- 8
-call.type$ -- 2
-change.case$ -- 13
+            524 strings with 4813 characters,
+and the built_in function-call counts, 1837 in all, are:
+= -- 194
+> -- 72
+< -- 3
++ -- 28
+- -- 24
+* -- 122
+:= -- 278
+add.period$ -- 15
+call.type$ -- 4
+change.case$ -- 24
 chr.to.int$ -- 0
-cite$ -- 2
-duplicate$ -- 45
-empty$ -- 80
-format.name$ -- 14
-if$ -- 228
+cite$ -- 4
+duplicate$ -- 79
+empty$ -- 148
+format.name$ -- 24
+if$ -- 412
 int.to.chr$ -- 0
-int.to.str$ -- 2
-missing$ -- 2
-newline$ -- 13
-num.names$ -- 4
-pop$ -- 19
+int.to.str$ -- 4
+missing$ -- 4
+newline$ -- 23
+num.names$ -- 8
+pop$ -- 31
 preamble$ -- 1
-purify$ -- 11
+purify$ -- 20
 quote$ -- 0
-skip$ -- 33
+skip$ -- 59
 stack$ -- 0
-substring$ -- 66
-swap$ -- 19
-text.length$ -- 2
+substring$ -- 133
+swap$ -- 31
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 8
+type$ -- 16
 warning$ -- 0
-while$ -- 10
-width$ -- 3
-write$ -- 26
+while$ -- 19
+width$ -- 5
+write$ -- 49
