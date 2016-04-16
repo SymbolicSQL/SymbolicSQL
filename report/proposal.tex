@@ -25,17 +25,18 @@ To address these challenges, we consider building the formal semantics of SQL in
 \section{Introduction}
 
 Rewriting SQL query to equivalent queries is an essential part of query
-optimizer. However, SQL 
-
-Reasoning the correctness of complicated rewriting rigorously 
+optimizer. Many commercial database systems perform aggressive SQL optimization with 
+unverified rewriting rules, and chances happened that an optimization rule is not correct. 
+The actual challenge is that reasoning the correctness of complicated rewriting rigorously 
 requires a lot of effort and error prone.
-Using the evaluation semantic that we developed, we can build tool to help 
-verify the correctness of query rewriting. Given $Q_1$ and $Q_2$, we can use 
-the SMT solver to verify the validity of $Q_1 \leftrightarrow Q_2$. 
-For complex query rewriting, we may need to bound the size and arity of the
- relation. Then the verification will not be complete but not sound. 
-However, we believe that being able to find counter example in bounded case is 
-still helpful compared with manually reasoning. 
+
+Thus, we consider applying model checking techniques to help 1) verifying and 2) generating conditionally-correct SQL rewriting rules: i.e. 
+given $Q_1$ and $Q_2$, we can use the SMT solver to verify the validity of $Q_1 \leftrightarrow Q_2$. 
+
+As SQL query equivalence checking is generally undecidable, we plan to bound the size and arity of the
+ relation for formal reasoning. Though the verification will neither be complete nor sound, we believe that being able to find counter example in bounded cases will be helpful for developers to understand these aggressive rewriting rules. 
+ 
+Furthermore, with the equivalence checker, we can help synthesize rewriting rules that are guaranteed to be semantics preserving with embedded constraints on a database. Since developing these conditionally semantics-preserving rewriting rules is a common challenge for humans, automatically generate such rules can further exploit SQL optimization performance.
 
 \section{Overview of This Project}
 In this project, we are planning to implement a SQL query equivalence verifier
