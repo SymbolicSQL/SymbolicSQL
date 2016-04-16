@@ -63,9 +63,10 @@ or using SMT solvers like z3, and will have some unit tests on the prototype as
 a proof-of-idea and a preliminary performance evaluation.
 
 % optional
-Since the real world SQL queries then to be much larger in size, a naive approach of feeding everything
-to the SMT solver may not work very well.
-We may push further on the performance of the verifier by either having a better encoding or dig deeper
+As for some optional components of the system, 
+since the real world SQL queries then to be much larger in size, a naive approach of feeding everything
+to the SMT solver may not work very well,
+we may push further on the performance of the verifier by either having a better encoding or dig deeper
 into the SMT solver to implement SQL theory modules for them.
 On the other hand, we may also work on expand the user experience by make use of the synthesize functionality
 of Rosette to give a possible correction of the SQL query if the given inputs are not equivalent.
