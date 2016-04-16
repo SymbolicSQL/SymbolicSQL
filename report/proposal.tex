@@ -71,6 +71,10 @@ into the SMT solver to implement SQL theory modules for them.
 On the other hand, we may also work on expand the user experience by make use of the synthesize functionality
 of Rosette to give a possible correction of the SQL query if the given inputs are not equivalent.
 
+\subsection{Timeline}
+
+We plan to build the system incrementally in terms of grammar (including writing compiling algorithm to compile them into SMT formulas and evaluating equivalence). We plan 3 weeks for SQL with only \textbf{Select}, \textbf{From}, \textbf{Where} clauses and \textbf{Group by}, then later 3 weeks for nested subqueries, and last 1 week for evaluation.
+
 \section{Related Work}
 
 \paragraph{Symbolic SQL Reasoning} Qex~\cite{veanes2010qex,veanes2009symbolic} is a tool to generate tables based on parameterized SQL queries for database system test purpose. Concretely, Qex takes an parameterized SQL query as well as a SQL property as inputs, it will then generate a full SQL query as well as a table instance satisfying the property for database unit test. Qex has build the background theory for SQL queries and is able to translate a SQL query into SMT formulas. Our project uses the same reasoning method as Qex do, but for different application scenario, i.e. SQL semantics checking.
