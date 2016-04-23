@@ -6,6 +6,9 @@
   (get-col table-gen col-name)
   (set-col table-gen col-name val))
 
+(define-generics query-gen
+  (run-query query-gen table))
+
 (struct SymTable ([columns #:mutable])
   #:transparent
   #:methods gen:table-gen
@@ -30,4 +33,11 @@
          (list name col)))
        col-names-types))
 
-(struct Query (select where))
+;; here select should be lambda on table,
+;; where should be predicates
+(struct Query (select where)
+  #:transparent
+  #:methods gen:query-gen
+  [(define (run-query self table)
+     (match-define (Query select where) self)
+     (select where))])
