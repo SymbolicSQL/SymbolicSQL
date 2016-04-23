@@ -9,7 +9,8 @@
     (cons (list 1 2 1) 1)
     (cons (list 2 1 0) 3)))
 
-(define q1 (lambda (content) 
+(define q1 
+  (lambda (content) 
      (filter 
 	(lambda (t) 
 	  (let ([ct (car t)])
@@ -19,7 +20,8 @@
 	content))
   )
 
-(define q2 (lambda (content)
+(define q2 
+  (lambda (content)
      (filter 
        (lambda (t) 
 	 (let ([ct (car t)])
@@ -29,4 +31,29 @@
        content))
   )
 
+
+(define q3-subquery
+  (lambda (content c0 c1)
+    (filter 
+      (lambda (t)
+	(let ([ct (car t)])
+	  (and 
+	    (eq? (list-ref ct 0) c0)
+	    (eq? (list-ref ct 1) c1))))
+      content)))
+
+(define q3
+  (lambda (content)
+      (map 
+	(lambda (p)
+	  (cons 
+	    (append 
+	      (car p) 
+	      (max (q3-subquery ()))) 
+	    (cdr p)))
+	content)))
+
+(print (q3 test-table))
+
 (define queries (list q1 q2))
+
