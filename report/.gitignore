@@ -1,0 +1,8 @@
+*.blg
+*.fdb_latexmk
+*.gz
+*.xml
+*.fls
+*.log
+*.out
+
