@@ -18,6 +18,13 @@
     (cons (list (sv) (sv) (sv)) (sv))
     (cons (list (sv) (sv) (sv)) (sv))))
 
+(define (sym-table-gen num-col num-unique-rows)
+  (let ([gen-list (lambda (proc n)
+                    (map (lambda (x) (proc)) (range n)))])
+    (gen-list (lambda ()
+                (cons (gen-list sv num-col) (sv)))
+              num-unique-rows)))
+
 (define (q1 content) 
   (filter 
     (lambda (t) 
