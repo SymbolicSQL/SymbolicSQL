@@ -7,16 +7,16 @@
     (cons (list 1 2 1) 1) 
     (cons (list 2 1 0) 3)))
 
-;(define (sv)
-;   (define-symbolic* y integer?) ; creates a different constant when evaluated
-;    y)
+(define (sv)
+   (define-symbolic* y integer?) ; creates a different constant when evaluated
+    y)
 
-(define-symbolic* sv integer?)
+; (define-symbolic* sv integer?)
 
 (define sym-content
   (list 
-    (cons (list sv sv sv) sv)
-    (cons (list sv sv sv) sv)))
+    (cons (list (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv)) (sv))))
 
 (define (q1 content) 
   (filter 
@@ -38,7 +38,7 @@
 	  (>= (list-ref ct 1) (list-ref ct 0)))))
     content))
 
-(assert (eq? (q1 concrete-content) (q2 concrete-content)))
+;(assert (eq? (q1 concrete-content) (q2 concrete-content)))
 
 (define (same content)
   (assert (eq? (q1 content) (q2 content))))
@@ -49,4 +49,4 @@
 
 (verify (same sym-content))
 
-;(evaluate sym-content cex)
+; (evaluate sym-content cex)
