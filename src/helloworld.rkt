@@ -45,4 +45,8 @@
 
 (define cex (verify (same sym-content)))
 
-(evaluate sym-content cex)
+; (verify (assert (= sv sv)))
+
+(verify (same sym-content))
+
+;(evaluate sym-content cex)
