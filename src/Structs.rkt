@@ -71,3 +71,4 @@
 (define sym-table
   (init-symtable `((c1 ,integer?) (c2 ,integer?) (c3 ,integer?))))
 
+(verify (assert (eq? (run-query my-query sym-table) (run-query my-query2 sym-table))))
