@@ -1,5 +1,9 @@
 #lang rosette/safe
 
+(provide dedup
+         projection
+         cross-prod)
+
 (define (dedup table)
   (cond 
     [(equal? '() table) '()]

@@ -1,5 +1,7 @@
 #lang rosette
 
+(require "evaluator.rkt")
+
 (provide queries test-table test-table1)
 
 (define test-table
@@ -38,27 +40,32 @@
        content))
   )
 
-
 (define q3-subquery
-  (lambda (content c0 c1)
-    (filter 
-      (lambda (t)
-	(let ([ct (car t)])
-	  (and 
-	    (eq? (list-ref ct 0) c0)
-	    (eq? (list-ref ct 1) c1))))
-      content)))
+  (lambda (content c0 c1) 
+    (projection 
+      (list 2)
+      (filter 
+      	(lambda (t)
+	  (let ([ct (car t)])
+	    (and 
+	      (eq? (list-ref ct 0) c0)
+	      (eq? (list-ref ct 1) c1))))
+      content))))
 
 (define q3
   (lambda (content)
-      (map 
-	(lambda (p)
-	  (cons 
-	    (append 
-	      (car p) 
-	      (max (q3-subquery ()))) 
-	    (cdr p)))
-	content)))
+    (map 
+      (lambda (p)
+	(cons 
+	  (append 
+	    (car p) 
+	    (max 
+	      (q3-subquery 
+		content 
+		(list-ref (car p) 0) 
+		(list-ref (car p) 1)))) 
+	  (cdr p)))
+      content)))
 
 (print (q3 test-table))
 
