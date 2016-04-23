@@ -1,6 +1,6 @@
 #lang racket
 
-(provide queries)
+(provide queries test-table)
 
 (define test-table
   (list
@@ -9,9 +9,7 @@
     (cons (list 1 2 1) 1)
     (cons (list 2 1 0) 3)))
 
-(define queries 
-  (list
-   (lambda (content) 
+(define q1 (lambda (content) 
      (filter 
 	(lambda (t) 
 	  (let ([ct (car t)])
@@ -19,16 +17,16 @@
 	      (< (list-ref ct 0) (list-ref ct 1))
 	      (< (list-ref ct 1) (list-ref ct 2))))) 
 	content))
+  )
 
-   (lambda (content)
+(define q2 (lambda (content)
      (filter 
        (lambda (t) 
 	 (let ([ct (car t)])
 	   (and 
 	     (< (list-ref ct 1) (list-ref ct 2))
-	     (>= (list-ref ct 1) (list-ref ct 0)))))
-       content))  
-   ))
+	     (> (list-ref ct 1) (list-ref ct 0)))))
+       content))
+  )
 
-(println ((list-ref queries 0) test-table))
-
+(define queries (list q1 q2))

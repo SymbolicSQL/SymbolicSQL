@@ -31,4 +31,7 @@
 
 (define cex (verify (same sym-content)))
 
+(println (q1 test-table))
+(println (q2 test-table))
+
 (verify (same sym-content))
