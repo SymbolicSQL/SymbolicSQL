@@ -34,4 +34,5 @@
 (println (q1 test-table))
 (println (q2 test-table))
 
-(verify (same sym-content))
+;(verify (same sym-content))
+

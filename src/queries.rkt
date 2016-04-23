@@ -25,7 +25,7 @@
 	 (let ([ct (car t)])
 	   (and 
 	     (< (list-ref ct 1) (list-ref ct 2))
-	     (> (list-ref ct 1) (list-ref ct 0)))))
+	     (>= (list-ref ct 1) (list-ref ct 0)))))
        content))
   )
 
