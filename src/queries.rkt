@@ -1,4 +1,4 @@
-#lang racket
+#lang rosette
 
 (provide queries test-table)
 

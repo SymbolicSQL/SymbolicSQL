@@ -33,5 +33,5 @@
 
 (println (q1 test-table))
 (println (q2 test-table))
-
+;(evaluate sym-content cex)
 (verify (same sym-content))
