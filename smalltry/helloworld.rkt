@@ -1,15 +1,48 @@
 #lang rosette 
 
-(define (poly x)
-   (+ (* x x x x) (* 6 x x x) (* 11 x x) (* 6 x)))
- 
-(define (factored x)
-   (* x (+ x 1) (+ x 2) (+ x 2)))
- 
-(define (same p f x)
-   (assert (= (p x) (f x))))
+(define concrete-content
+  (list 
+    (cons (list 1 1 2) 2) 
+    (cons (list 0 1 2) 2)
+    (cons (list 1 2 1) 1) 
+    (cons (list 2 1 0) 3)))
 
-(define-symbolic i integer?)
-(define cex (verify (same poly factored i)))
+;(define (sv)
+;   (define-symbolic* y integer?) ; creates a different constant when evaluated
+;    y)
 
-(evaluate i cex)
+(define-symbolic* sv integer?)
+
+(define sym-content
+  (list 
+    (cons (list sv sv sv) sv)
+    (cons (list sv sv sv) sv)))
+
+(define (q1 content) 
+  (filter 
+    (lambda (t) 
+      (let 
+	([ct (car t)])
+	(and 
+	  (< (list-ref ct 0) (list-ref ct 1))
+	  (< (list-ref ct 1) (list-ref ct 2))))) 
+    content))
+
+(define (q2 content) 
+  (filter 
+    (lambda (t) 
+      (let 
+	([ct (car t)])
+	(and 
+	  (< (list-ref ct 1) (list-ref ct 2))
+	  (>= (list-ref ct 1) (list-ref ct 0)))))
+    content))
+
+(assert (eq? (q1 concrete-content) (q2 concrete-content)))
+
+(define (same content)
+  (assert (eq? (q1 content) (q2 content))))
+
+(define cex (verify (same sym-content)))
+
+(evaluate sym-content cex)
