@@ -1,6 +1,6 @@
 #lang rosette
 
-(provide queries test-table)
+(provide queries test-table test-table1)
 
 (define test-table
   (list
@@ -9,8 +9,15 @@
     (cons (list 1 2 1) 1)
     (cons (list 2 1 0) 3)))
 
-(define q1 
-  (lambda (content) 
+(define test-table1
+  (list
+    (cons (list 1 1 2) 2)
+    (cons (list 1 1 2) 2)
+    (cons (list 0 1 2) 2)	          
+    (cons (list 1 2 1) 1)
+    (cons (list 2 1 0) 3)))
+
+(define q1 (lambda (content) 
      (filter 
 	(lambda (t) 
 	  (let ([ct (car t)])
