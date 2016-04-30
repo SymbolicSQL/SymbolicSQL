@@ -63,9 +63,6 @@
 (define (string->colname str)
   (map string->symbol (string-split str ".")))
 
-(define table1 (Table 't1 '(a b c) '()))
-(define table2 (Table 't2 '(a b c) '()))
-(define table3 (Table 't3 (schema-join table1 table2) '()))
-
-
-                          
+;; (define table1 (Table 't1 '(a b c) '()))
+;; (define table2 (Table 't2 '(a b c) '()))
+;; (define table3 (Table 't3 (schema-join table1 table2) '()))
