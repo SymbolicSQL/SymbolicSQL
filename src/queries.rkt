@@ -85,7 +85,5 @@
 	    (cdr p)))
 	content))))
 
-(println (q3 test-table))
-
 (define queries (list q1 q2 q3))
 

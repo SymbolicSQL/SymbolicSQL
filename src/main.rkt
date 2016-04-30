@@ -28,7 +28,7 @@
 (define q3 (list-ref queries 2))
 
 (define (same content)
-  (assert (eq? (q1 content) (q2 content))))
+  (assert (eq? (q1 content) (q3 content))))
 
 (define cex (verify (same sym-content)))
 
@@ -36,5 +36,5 @@
 ; (println (q2 test-table))
 ; (println (q3 test-table))
 
-; (evaluate sym-content cex)
+(evaluate sym-content cex)
 ; (verify (same sym-content))
