@@ -13,9 +13,10 @@
       (cons (list 2 1 0) 3)))
 
 (define table1 
-  ("table1" )
-  (list "c1" "c2" "c3")
-  table1-content)
+  (table
+    ("table1" )
+    (list "c1" "c2" "c3")
+    table1-content))
 
 ; select-args : a list of values
 ; from-queries : a list of tables/subqueries
