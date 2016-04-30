@@ -2,7 +2,8 @@
 
 (struct table (name schema content))
 
-(define test-table1
+
+(define table1-content
     (list
       (cons (list 1 1 2) 2)
       (cons (list 1 1 2) 2)
@@ -11,6 +12,14 @@
       (cons (list 1 2 3) 1)
       (cons (list 2 1 0) 3)))
 
+(define table1 
+  ("table1" )
+  (list "c1" "c2" "c3")
+  table1-content)
+
+; select-args : a list of values
+; from-queries : a list of tables/subqueries
+; where-filter : a filter
 (struct query-select (select-args from-queries where-filter)
 	#:transparent)
 	;#:method gen:custom-write
@@ -34,7 +43,7 @@
 (struct filter-empty ())
 
 (query-select 
-  (list (val-const 3) (val-column-ref "c1") (val-const 4) (val-aggr "aggr-max" (query-named test-table1)))
+  (list (val-const 3) (val-column-ref "c1") (val-const 4) (val-aggr "aggr-max" (query-named table1)))
   (query-named test-table1)
   (filter-empty))
 
