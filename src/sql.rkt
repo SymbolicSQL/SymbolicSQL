@@ -2,7 +2,6 @@
 
 (struct table (name schema content))
 
-
 (define table1-content
     (list
       (cons (list 1 1 2) 2)
@@ -14,7 +13,7 @@
 
 (define table1 
   (table
-    ("table1" )
+    "table1" 
     (list "c1" "c2" "c3")
     table1-content))
 
@@ -44,9 +43,9 @@
 (struct filter-empty ())
 
 (query-select 
-  (list (val-const 3) (val-column-ref "c1") (val-const 4) (val-aggr "aggr-max" (query-named table1)))
-  (query-named test-table1)
-  (filter-empty))
+  (list (val-column-ref "c1") (val-column-ref "c2"))
+  (list (query-named table1))
+  (filter-binop "<" (val-column-ref "c1") (val-column-ref "c2")))
 
 
 
