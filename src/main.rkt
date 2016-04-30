@@ -32,9 +32,9 @@
 
 (define cex (verify (same sym-content)))
 
-(println (q1 test-table))
-(println (q2 test-table))
-(println (q3 test-table))
+; (println (q1 test-table))
+; (println (q2 test-table))
+; (println (q3 test-table))
 
-(evaluate sym-content cex)
-(verify (same sym-content))
+; (evaluate sym-content cex)
+; (verify (same sym-content))
