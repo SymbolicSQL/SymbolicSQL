@@ -1,5 +1,7 @@
 #lang rosette
 
+(struct table (name schema content))
+
 (define test-table1
     (list
       (cons (list 1 1 2) 2)
@@ -29,7 +31,7 @@
 (struct filter-disj (f1 f2))
 (struct filter-not (f1 f2))
 (struct filter-exists (query))
-(struct filter-empty)
+(struct filter-empty ())
 
 (query-select 
   (list (val-const 3) (val-column-ref "c1") (val-const 4) (val-aggr "aggr-max" (query-named test-table1)))
