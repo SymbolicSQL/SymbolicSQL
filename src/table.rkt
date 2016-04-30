@@ -4,6 +4,7 @@
 (require racket/match)
 
 (define-generics table-interface
+  (rename table-interface new-name)
   ; get schema as a list of column names
   (get-schema table-interface)
   ; rename the column names
@@ -19,12 +20,15 @@
                      [else (aux-func ele (cdr l) (+ 1 idx))]))])
     (aux-func ele l 0)))
 
-(struct Table (name
+(struct Table ([name #:mutable]
                [schema #:mutable]
                content)
   #:transparent
   #:methods gen:table-interface
-  [(define (get-schema self)
+  [(define (rename self new-name)
+     (set-Table-name! self new-name))
+   
+   (define (get-schema self)
      (Table-schema self))
 
    (define (rename-cols self col-names)
