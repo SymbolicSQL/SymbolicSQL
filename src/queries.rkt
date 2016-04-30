@@ -69,7 +69,7 @@
 	      (eq? (list-ref ct 1) c1))))
       content))))
 
-; SELECT c1, c2, MAX(subquery)
+; SELECT DISTINCT c1, c2, MAX(subquery)
 (define q3
   (lambda (content)
     (dedup 
@@ -87,3 +87,5 @@
 
 (define queries (list q1 q2 q3))
 
+(q3 test-table1)
+(q2 test-table1)
