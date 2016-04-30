@@ -75,7 +75,8 @@
     (dedup 
       (map (lambda (p)
 	(cons 
-	  (append (car p) 
+	  (append 
+	    (list (caar p) (cadar p)) 
 	    (list 
 	      (apply 
 		max 
@@ -86,6 +87,7 @@
 	content))))
 
 (define queries (list q1 q2 q3))
+ 
+; (q3 test-table1)
 
-(q3 test-table1)
-(q2 test-table1)
+; (apply max (flatten-once (map (lambda (t) (car t)) (q3-subquery test-table1 1 2))))
