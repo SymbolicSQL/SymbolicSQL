@@ -25,6 +25,7 @@
 ; the running part
 (define q1 (list-ref queries 0))
 (define q2 (list-ref queries 1))
+(define q3 (list-ref queries 2))
 
 (define (same content)
   (assert (eq? (q1 content) (q2 content))))
@@ -33,6 +34,7 @@
 
 (println (q1 test-table))
 (println (q2 test-table))
+(println (q3 test-table))
 
 (evaluate sym-content cex)
 (verify (same sym-content))

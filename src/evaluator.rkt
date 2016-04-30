@@ -1,8 +1,8 @@
 #lang rosette/safe
 
 (provide dedup
-         projection
-         cross-prod)
+	 projection
+	 cross-prod)
 
 (define (dedup table)
   (cond 
