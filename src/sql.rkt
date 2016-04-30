@@ -31,10 +31,10 @@
 
 (define (denote-sql query)
   (cond 
-    [query-named? "qn"]
-    [query-join? "qj"]
-    [query-select? "qs"]
-    [query-rename? "qr"]))
+    [(query-named? query) "qn"]
+    [(query-join? query) "qj"]
+    [(query-select? query) "qs"]
+    [(query-rename? query) "qr"]))
 
 ;;; values
 (struct val-const (val)
