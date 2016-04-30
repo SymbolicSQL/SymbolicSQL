@@ -3,8 +3,10 @@
 (require racket/generic)
 (require racket/match)
 
+(provide (all-defined-out))
+
 (define-generics table-interface
-  (rename table-interface new-name)
+  (rename-table table-interface new-name)
   ; get schema as a list of column names
   (get-schema table-interface)
   ; rename the column names
@@ -25,7 +27,7 @@
                content)
   #:transparent
   #:methods gen:table-interface
-  [(define (rename self new-name)
+  [(define (rename-table self new-name)
      (set-Table-name! self new-name))
    
    (define (get-schema self)
