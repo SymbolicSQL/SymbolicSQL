@@ -43,12 +43,19 @@
          [n1 (Table-name t1)]
          [n2 (Table-name t2)]
          [renamed1 (map (lambda (x)
-                          (cons n1 x))
+                          (if (list? x)
+                              (cons n1 x)
+                              (list n1 x)))
                         s1)]
          [renamed2 (map (lambda (x)
-                          (cons n2 x))
+                          (if (list? x)
+                              (cons n2 x)
+                              (list n2 x)))
                         s2)])
     (append renamed1 renamed2)))
+
+(define (string->colname str)
+  (map string->symbol (string-split str ".")))
 
 (define table1 (Table 't1 '(a b c) '()))
 (define table2 (Table 't2 '(a b c) '()))
