@@ -22,8 +22,9 @@
 ; select-args : a list of values
 ; from-queries : a list of tables/subqueries
 ; where-filter : a filter
-(struct query-select (select-args from-queries where-filter)
+(struct query-select (select-args from-query where-filter)
 	#:transparent)
+(struct query-join (queries))
 (struct query-named (table-ref))
 (struct query-rename (query table-name))
 
