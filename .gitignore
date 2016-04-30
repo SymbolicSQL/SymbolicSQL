@@ -12,3 +12,4 @@
 *.cb2
 *.pdf
 *.bbl
+./compile*
