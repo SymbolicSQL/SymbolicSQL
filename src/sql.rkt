@@ -10,10 +10,10 @@
       (cons (list 2 1 0) 3)))
 
 (struct query-select (select-args from-queries where-filter)
-	#:transparent
-	#:method gen:custom-write
-	[(define (write-proc query-select port mode)
-	   (show ":::::" port))])
+	#:transparent)
+	;#:method gen:custom-write
+	;[(define (write-proc query-select port mode)
+	   ;(show ":::::" port))])
 
 (struct query-named (table-ref))
 
