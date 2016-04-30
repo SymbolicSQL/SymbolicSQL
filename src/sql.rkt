@@ -1,5 +1,7 @@
 #lang rosette
 
+(require "table.rkt")
+
 (struct table (name schema content))
 
 (define table1-content
@@ -22,11 +24,17 @@
 ; select-args : a list of values
 ; from-queries : a list of tables/subqueries
 ; where-filter : a filter
-(struct query-select (select-args from-query where-filter)
-	#:transparent)
+(struct query-select (select-args from-query where-filter))
 (struct query-join (queries))
 (struct query-named (table-ref))
 (struct query-rename (query table-name))
+
+(define (denote-sql query)
+  (cond 
+    [query-named? "qn"]
+    [query-join? "qj"]
+    [query-select? "qs"]
+    [query-rename? "qr"]))
 
 ;;; values
 (struct val-const (val)
@@ -44,10 +52,11 @@
 (struct filter-exists (query))
 (struct filter-empty ())
 
-(query-select 
+(define q (query-select 
   (list (val-column-ref "c1") (val-column-ref "c2"))
   (list (query-named table1))
-  (filter-binop "<" (val-column-ref "c1") (val-column-ref "c2")))
+  (filter-binop "<" (val-column-ref "c1") (val-column-ref "c2"))))
 
+(denote-sql q)
 
 
