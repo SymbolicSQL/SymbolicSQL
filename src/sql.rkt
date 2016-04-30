@@ -10,7 +10,10 @@
       (cons (list 2 1 0) 3)))
 
 (struct query-select (select-args from-queries where-filter)
-	#:transparent)
+	#:transparent
+	#:method gen:custom-write
+	[(define (write-proc query-select port mode)
+	   (show ":::::" port))])
 
 (struct query-named (table-ref))
 
@@ -26,8 +29,12 @@
 (struct filter-disj (f1 f2))
 (struct filter-not (f1 f2))
 (struct filter-exists (query))
+(struct filter-empty)
 
-(list (val-const 3) (val-column-ref "c1") (val-const 4) (val-aggr "aggr-max" (query-named test-table1)))
+(query-select 
+  (list (val-const 3) (val-column-ref "c1") (val-const 4) (val-aggr "aggr-max" (query-named test-table1)))
+  (query-named test-table1)
+  (filter-empty))
 
 
 
