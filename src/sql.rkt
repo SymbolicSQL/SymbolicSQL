@@ -41,7 +41,6 @@
 (struct filter-exists (query))
 (struct filter-empty ())
 
-
 ;;; for test purpose
 
 (define test-table1
@@ -52,7 +51,7 @@
       (cons (list 1 2 1) 1)
       (cons (list 1 2 3) 1)
       (cons (list 2 1 0) 3)))
-(define table1 (Table 't1 '(a b c) test-table1))
+(define table1 (Table "t1" (list "c1" "c2" "c3") test-table1))
 
 (define q (query-select 
   (list (val-column-ref "c1") (val-column-ref "c2"))
