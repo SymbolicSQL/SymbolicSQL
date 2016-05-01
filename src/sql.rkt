@@ -12,15 +12,15 @@
 (struct query-named (table-ref))
 (struct query-rename (query table-name))
 
-(define (denote-sql query external-row)
+(define (denote-sql query ctxt)
   (cond 
     [(query-named? query) query]
     [(query-join? query) "qj"]
     [(query-select? query) "qs"]
-    [(query-rename? query) "ar"]))
-     ;(rename-table 
-	; (denote-sql (query-rename-query query))
-       	; (query-rename-table-name query))]))
+    [(query-rename? query)
+     (rename-table 
+	(denote-sql (query-rename-query query) ctxt)
+	(query-rename-table-name query))]))
 
 ;;; values
 (struct val-const (val)
@@ -58,4 +58,4 @@
 
 (define q2 (query-rename (query-named table1) "qt"))
 
-(denote-sql q2)
+(denote-sql q2 '())
