@@ -19,12 +19,13 @@
      (query-named-table-ref query)]
     ; denote join to a racket program
     [(query-join? query) "qj"]
+    ; denote rename table
     [(query-rename? query)
      (let ([q (denote-sql (query-rename-query query) ctxt)])
        (rename-table (denote-sql (query-rename-query query) ctxt)
                      (query-rename-table-name query))
        q)]))
-    [(query-select? query) "qs"]
+    [(query-select? query) "xx"]
        
 
 ;;; values
