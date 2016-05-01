@@ -6,22 +6,15 @@
 (define (xproduct-raw a b)
   (let ([imr (cartesian-product a b)])
     (map (lambda (x)
-           (cons (append (car (car x)) (car (cdr x))) (* (cdr (car x)) (cdr (cdr x)))) imr)
+           (cons (append (car (car x)) (car (second x))) (* (cdr (car x)) (cdr (second x))))) imr
          )
     )
   )
 
 ;; Table -> Table -> Table
 (define (xproduct a b name)
-  (let* ([ta (Table-content a)]
-         [tb (Table-content b)]
-         [scm (schema-join a b)]
-         )
-    (Table
-     name scm (xproduct-raw ta tb)
-    ) 
-    )
-  )
+  (Table name (schema-join a b) (xproduct-raw (Table-content a) (Table-content b))) 
+)
 
 ;; test xproduct
 (define content-a
@@ -38,6 +31,7 @@
   (Table 'a '(a b c) content-a))
 
 (define table-b
-  (Table 'b' '(a b c) content-b))
+  (Table 'b '(a b c) content-b))
 
-(println (xproduct table-a table-b))
+(println (xproduct table-a table-b 'c))
+(println (xproduct-raw content-a content-b))
