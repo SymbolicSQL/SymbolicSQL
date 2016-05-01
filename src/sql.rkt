@@ -19,9 +19,11 @@
     [(query-join? query) "qj"]
     [(query-select? query) "qs"]
     [(query-rename? query)
-     (rename-table 
-	(denote-sql (query-rename-query query) ctxt)
-	(query-rename-table-name query))]))
+     (let ([q (denote-sql (query-rename-query query) ctxt)])
+       (rename-table (denote-sql (query-rename-query query) ctxt)
+                     (query-rename-table-name query))
+       q)]))
+       
 
 ;;; values
 (struct val-const (val)
