@@ -14,7 +14,8 @@
 
 (define (denote-sql query ctxt)
   (cond 
-    [(query-named? query) query]
+    [(query-named? query) 
+     (query-named-table-ref query)]
     [(query-join? query) "qj"]
     [(query-select? query) "qs"]
     [(query-rename? query)
@@ -58,4 +59,4 @@
 
 (define q2 (query-rename (query-named table1) "qt"))
 
-(denote-sql q2 '())
+(println (denote-sql q2 '()))
