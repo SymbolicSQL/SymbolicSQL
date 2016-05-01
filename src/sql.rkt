@@ -2,23 +2,6 @@
 
 (require "table.rkt")
 
-(struct table (name schema content))
-
-(define table1-content
-    (list
-      (cons (list 1 1 2) 2)
-      (cons (list 1 1 2) 2)
-      (cons (list 0 1 2) 2)
-      (cons (list 1 2 1) 1)
-      (cons (list 1 2 3) 1)
-      (cons (list 2 1 0) 3)))
-
-(define table1 
-  (table
-    "table1" 
-    (list "c1" "c2" "c3")
-    table1-content))
-
 ;;; query structure
 
 ; select-args : a list of values
@@ -29,12 +12,18 @@
 (struct query-named (table-ref))
 (struct query-rename (query table-name))
 
-(define (denote-sql query)
+(define (denote-sql query ctxt)
   (cond 
-    [(query-named? query) "qn"]
+    [(query-named? query) 
+     (query-named-table-ref query)]
     [(query-join? query) "qj"]
     [(query-select? query) "qs"]
-    [(query-rename? query) "qr"]))
+    [(query-rename? query)
+     (let ([q (denote-sql (query-rename-query query) ctxt)])
+       (rename-table (denote-sql (query-rename-query query) ctxt)
+                     (query-rename-table-name query))
+       q)]))
+       
 
 ;;; values
 (struct val-const (val)
@@ -52,11 +41,23 @@
 (struct filter-exists (query))
 (struct filter-empty ())
 
+;;; for test purpose
+
+(define test-table1
+    (list
+      (cons (list 1 1 2) 2)
+      (cons (list 1 1 2) 2)
+      (cons (list 0 1 2) 2)
+      (cons (list 1 2 1) 1)
+      (cons (list 1 2 3) 1)
+      (cons (list 2 1 0) 3)))
+(define table1 (Table "t1" (list "c1" "c2" "c3") test-table1))
+
 (define q (query-select 
   (list (val-column-ref "c1") (val-column-ref "c2"))
   (list (query-named table1))
   (filter-binop "<" (val-column-ref "c1") (val-column-ref "c2"))))
 
-(denote-sql q)
+(define q2 (query-rename (query-named table1) "qt"))
 
-
+(println (denote-sql q2 '()))

@@ -61,7 +61,7 @@
     (append renamed1 renamed2)))
 
 (define (string->colname str)
-  (map string->symbol (string-split str ".")))
+  (map identity (string-split str ".")))
 
 ;; (define table1 (Table 't1 '(a b c) '()))
 ;; (define table2 (Table 't2 '(a b c) '()))
