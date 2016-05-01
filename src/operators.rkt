@@ -2,6 +2,8 @@
 
 (require "table.rkt")
 
+(provide xproduct xproduct-raw)
+
 ;; rawTable -> rawTable -> rawTable
 (define (xproduct-raw a b)
   (let ([imr (cartesian-product a b)])
@@ -33,5 +35,6 @@
 (define table-b
   (Table 'b '(a b c) content-b))
 
-(println (xproduct table-a table-b 'c))
-(println (xproduct-raw content-a content-b))
+; tests
+;(println (xproduct table-a table-b 'c))
+;(println (xproduct-raw content-a content-b))
