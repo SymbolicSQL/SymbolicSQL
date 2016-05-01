@@ -14,15 +14,17 @@
 
 (define (denote-sql query ctxt)
   (cond 
+    ; denote named table
     [(query-named? query) 
      (query-named-table-ref query)]
+    ; denote join to a racket program
     [(query-join? query) "qj"]
-    [(query-select? query) "qs"]
     [(query-rename? query)
      (let ([q (denote-sql (query-rename-query query) ctxt)])
        (rename-table (denote-sql (query-rename-query query) ctxt)
                      (query-rename-table-name query))
        q)]))
+    [(query-select? query) "qs"]
        
 
 ;;; values
