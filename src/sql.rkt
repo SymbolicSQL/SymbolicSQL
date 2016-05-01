@@ -29,8 +29,7 @@
     [(query-rename? query)
      (let ([q (denote-sql (query-rename-query query) ctxt)])
        (rename-table (denote-sql (query-rename-query query) ctxt)
-                     (query-rename-table-name query))
-       q)]
+                     (query-rename-table-name query)))]
     ; denote select query
     [(query-select? query) "xx"]))
        

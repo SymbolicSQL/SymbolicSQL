@@ -6,6 +6,7 @@
 (provide (all-defined-out))
 
 (define-generics table-interface
+  ; this will create a new table
   (rename-table table-interface new-name)
   ; get schema as a list of column names
   (get-schema table-interface)
@@ -28,7 +29,8 @@
   #:transparent
   #:methods gen:table-interface
   [(define (rename-table self new-name)
-     (set-Table-name! self new-name))
+     (match-define (Table name schema content) self)
+     (Table new-name schema content))
    
    (define (get-schema self)
      (Table-schema self))
