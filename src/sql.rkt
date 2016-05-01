@@ -1,6 +1,7 @@
 #lang rosette
 
 (require "table.rkt")
+(require "operators.rkt")
 
 ;;; query structure
 
@@ -8,7 +9,7 @@
 ; from-queries : a list of tables/subqueries
 ; where-filter : a filter
 (struct query-select (select-args from-query where-filter))
-(struct query-join (queries))
+(struct query-join (query1 query2))
 (struct query-named (table-ref))
 (struct query-rename (query table-name))
 
@@ -18,14 +19,20 @@
     [(query-named? query) 
      (query-named-table-ref query)]
     ; denote join to a racket program
-    [(query-join? query) "qj"]
+    [(query-join? query) 
+     (xproduct	
+       (denote-sql (query-join-query1 query) ctxt)
+       (denote-sql (query-join-query2 query) ctxt)
+       "anonymous")
+     ]
     ; denote rename table
     [(query-rename? query)
      (let ([q (denote-sql (query-rename-query query) ctxt)])
        (rename-table (denote-sql (query-rename-query query) ctxt)
                      (query-rename-table-name query))
-       q)]))
-    [(query-select? query) "xx"]
+       q)]
+    ; denote select query
+    [(query-select? query) "xx"]))
        
 
 ;;; values
@@ -63,4 +70,7 @@
 
 (define q2 (query-rename (query-named table1) "qt"))
 
-(println (denote-sql q2 '()))
+
+(define q3 (query-join (query-named table1) (query-rename (query-named table1) "t2")))
+
+(println (denote-sql q3 '()))
