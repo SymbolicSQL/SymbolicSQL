@@ -40,7 +40,7 @@
 \\
  \llbracket \mathbf{and}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \land ... \land (\llbracket f_n;\Phi \rrbracket~e))\\
 \llbracket \mathbf{or}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \lor ... \lor (\llbracket f_n;\Phi \rrbracket~e))\\
-\llbracket\mathbf{exists}(R);\Phi \rrbracket &\leadsto& \lambda e. (\llbracket R;\Phi \rrbracket~e)\\
+\llbracket\mathbf{exists}(R);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{not\_empty}~(\llbracket R;\Phi \rrbracket~e))\\
 \llbracket \mathbf{binop}(\mathit{op}, v_1, v_2);\Phi\rrbracket &\leadsto&  \lambda e.(\llbracket \mathit{op} \rrbracket~(\llbracket v_1;\Phi \rrbracket~e)~(\llbracket v_2;\Phi \rrbracket~e))\\
 \\
  \llbracket v_1,...,v_n;\Phi \rrbracket & \leadsto &\lambda e(\mathsf{list}~(\llbracket v_1;\Phi\rrbracket~e),...,(\llbracket v_n;\Phi\rrbracket~e)) \\
