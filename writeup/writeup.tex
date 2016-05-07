@@ -33,8 +33,8 @@
 \begin{array}{rcl}
  \llbracket T; \Phi  \rrbracket& \leadsto& \lambda e.T\\
 \llbracket \mathbf{join}(R_1,...,R_n);\Phi \rrbracket &\leadsto& \lambda e.(\llbracket R_1; \Phi\rrbracket~e)\times...\times(\llbracket R_n;\Phi\rrbracket~e)\\
-\llbracket \mathbf{select}(V, R, f);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{map}~(\lambda x.\llbracket V;\mathsf{update}(\Phi;e\concat x) \rrbracket~ e\concat x)\\
-& & \qquad(\mathsf{filter}~(\lambda x.\llbracket f; \mathsf{update}(\Phi;e\concat x)\rrbracket~e\concat x)~ (\llbracket R;\Phi \rrbracket~e)))\\
+\llbracket \mathbf{select}(V, R, f);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{map}~(\lambda x.\llbracket V;\mathtt{update}(\Phi,e\concat x) \rrbracket~ e\concat x)\\
+& & \qquad(\mathsf{filter}~(\lambda x.\llbracket f; \mathtt{update}(\Phi,e\concat x)\rrbracket~e\concat x)~ (\llbracket R;\Phi \rrbracket~e)))\\
 \\
 \llbracket \mathbf{and}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \land ... \land (\llbracket f_n;\Phi \rrbracket~e))\\
 \llbracket \mathbf{or}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \lor ... \lor (\llbracket f_n;\Phi \rrbracket~e))\\
@@ -45,7 +45,6 @@
 \llbracket \mathit{const};\Phi \rrbracket & \leadsto & \lambda e.\mathit{const}\\
 \llbracket \mathit{c};\Phi \rrbracket & \leadsto & \lambda e. (\mathsf{lookup}~e~i)~~\textit{where $i=\Phi(c)$}\\
 \llbracket \mathbf{aggr}(\alpha, R);\Phi \rrbracket & \leadsto & \lambda e.(\alpha~(\llbracket R;\Phi\rrbracket~e))\\
-
 \end{array}
 \]
 
