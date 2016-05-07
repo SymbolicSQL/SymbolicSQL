@@ -38,8 +38,18 @@
 	#:transparent)
 (struct val-column-ref (column-name)
 	#:transparent)
-(struct val-aggr (aggr-func query)
+(struct val-agg (agg-func query)
 	#:transparent)
+
+;;; denote value
+(define (denote-value value nmap)
+  (cond
+    [val-const? (lambda (e) (val value))]
+    [val-column-ref?
+     (lambda (e) (list-ref (hash-ref nmap (column-name value))))]
+    [val-agg?
+     (lambda (e) ((agg-func value) ((denote-sql (query value) nmap) e)))])
+     
 
 ;;; filters
 (struct filter-binop (op val1 val2))
