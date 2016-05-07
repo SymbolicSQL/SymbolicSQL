@@ -1,7 +1,6 @@
 #lang rosette
 
-(require "table.rkt")
-(require "operators.rkt")
+(require "table.rkt" "operators.rkt")
 
 ;;; query structure
 
