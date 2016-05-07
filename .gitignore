@@ -12,4 +12,6 @@
 *.cb2
 *.pdf
 *.bbl
+*.gz
+*.fdb_latexmk
 ./compile*
