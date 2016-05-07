@@ -10,7 +10,7 @@
 (struct query-select (select-args from-query where-filter))
 (struct query-join (query1 query2))
 (struct query-named (table-ref))
-(struct query-rename (query table-name))
+(struct query-rename (query table-name column-names))
 
 (define (denote-sql query index-map)
   (cond 
@@ -33,6 +33,19 @@
     ; denote select query
     [(query-select? query) "xx"]))
        
+(define (extract-schema query)
+  (cond 
+    [(query-named? query) 
+     (get-schema (query-named-table-ref query))]
+    [(query-join? query) 
+     (append (extract-schema (query-join-query1 query)) 
+	     (extract-schema (query-join-query2 query)))]
+    [(query-rename? query)
+     (let ([tn (query-rename-table-name query)]
+	   [cnames (query-rename-column-names query)])
+       (map (lambda (x) (string-append tn cnames)) cnames))]
+    [(query-select? query)
+     (map (lambda (x) "dummy") (query-select-select-args query))]))
 
 ;;; values
 (struct val-const (val)
