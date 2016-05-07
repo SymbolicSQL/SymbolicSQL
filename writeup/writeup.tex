@@ -12,6 +12,7 @@
 \usepackage{bussproofs}
 \usepackage{stmaryrd}
 
+\newcommand{\flyingbox}[1]{\begin{flushleft}\fbox{{#1}}\end{flushleft}}
 \newcommand{\concat}{\ensuremath{\!+\!\!\!\!+\!\,}}
 
 %for bussproofs abbreviation
@@ -33,21 +34,27 @@
 \begin{array}{rcl}
  \llbracket T; \Phi  \rrbracket& \leadsto& \lambda e.T\\
 \llbracket \mathbf{join}(R_1,...,R_n);\Phi \rrbracket &\leadsto& \lambda e.(\llbracket R_1; \Phi\rrbracket~e)\times...\times(\llbracket R_n;\Phi\rrbracket~e)\\
-\llbracket \mathbf{select}(V, R, f);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{map}~(\lambda x.\llbracket V;\mathtt{update}(\Phi,e\concat x) \rrbracket~ e\concat x)\\
-& & \qquad(\mathsf{filter}~(\lambda x.\llbracket f; \mathtt{update}(\Phi,e\concat x)\rrbracket~e\concat x)~ (\llbracket R;\Phi \rrbracket~e)))\\
+\llbracket \mathbf{select}(V, R, f);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{map}~(\lambda x.\llbracket V;\mathtt{update}(\Phi, x, \mathtt{schema}(R)) \rrbracket~ e\concat x)\\
+& & \qquad(\mathsf{filter}~(\lambda x.\llbracket f; \mathtt{update}(\Phi, x,\mathtt{schema}(R))\rrbracket~e\concat x)~ (\llbracket R;\Phi \rrbracket~e)))\\
+\llbracket \mathbf{rename}(R, n, l);\Phi \rrbracket &\leadsto& \lambda e.(\llbracket R; \Phi\rrbracket~e)\\
 \\
-\llbracket \mathbf{and}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \land ... \land (\llbracket f_n;\Phi \rrbracket~e))\\
+ \llbracket \mathbf{and}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \land ... \land (\llbracket f_n;\Phi \rrbracket~e))\\
 \llbracket \mathbf{or}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \lor ... \lor (\llbracket f_n;\Phi \rrbracket~e))\\
 \llbracket\mathbf{exists}(R);\Phi \rrbracket &\leadsto& \lambda e. (\llbracket R;\Phi \rrbracket~e)\\
 \llbracket \mathbf{binop}(\mathit{op}, v_1, v_2);\Phi\rrbracket &\leadsto&  \lambda e.(\llbracket \mathit{op} \rrbracket~(\llbracket v_1;\Phi \rrbracket~e)~(\llbracket v_2;\Phi \rrbracket~e))\\
 \\
-\llbracket v_1,...,v_n;\Phi \rrbracket & \leadsto &\lambda e(\mathsf{list}~(\llbracket v_1;\Phi\rrbracket~e),...,(\llbracket v_n;\Phi\rrbracket~e)) \\
+ \llbracket v_1,...,v_n;\Phi \rrbracket & \leadsto &\lambda e(\mathsf{list}~(\llbracket v_1;\Phi\rrbracket~e),...,(\llbracket v_n;\Phi\rrbracket~e)) \\
+ \\
 \llbracket \mathit{const};\Phi \rrbracket & \leadsto & \lambda e.\mathit{const}\\
 \llbracket \mathit{c};\Phi \rrbracket & \leadsto & \lambda e. (\mathsf{lookup}~e~i)~~\textit{where $i=\Phi(c)$}\\
 \llbracket \mathbf{aggr}(\alpha, R);\Phi \rrbracket & \leadsto & \lambda e.(\alpha~(\llbracket R;\Phi\rrbracket~e))\\
+\\
+\mathtt{schema}(T) & = & T.\mathit{schema}\\
+\mathtt{schema}(\mathbf{join}(R_1,...,R_n)) & = & \mathtt{schema}( R_1) \concat ...\concat \mathtt{schema}(R_n)\\
+\mathtt{schema}(\mathbf{select}(V, R, f))&=& [\textit{dummy},...,\textit{dummy}]\\
+\mathtt{schema}(\mathbf{rename}(R, \textit{name}, \bar{c})) &=& [\textit{name}.c_1,...,\textit{name}.c_n]\\
 \end{array}
 \]
-
 % \begin{center}
 % \AXC{}
 % \UIC{$\Sigma \vdash T \leadsto T$}

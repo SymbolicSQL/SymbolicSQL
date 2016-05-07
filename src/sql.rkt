@@ -13,17 +13,18 @@
 (struct query-named (table-ref))
 (struct query-rename (query table-name))
 
-(define (denote-sql query ctxt)
+(define (denote-sql query index-map)
   (cond 
     ; denote named table
     [(query-named? query) 
-     (query-named-table-ref query)]
+       (lambda (e) (query-named-table-ref query))]
     ; denote join to a racket program
     [(query-join? query) 
-     (xproduct	
-       (denote-sql (query-join-query1 query) ctxt)
-       (denote-sql (query-join-query2 query) ctxt)
-       "anonymous")
+     (lambda (e) 
+       (xproduct	
+       	(denote-sql (query-join-query1 query) ctxt)
+       	(denote-sql (query-join-query2 query) ctxt)
+       "anonymous"))
      ]
     ; denote rename table
     [(query-rename? query)
