@@ -21,14 +21,14 @@
     [(query-join? query) 
      (lambda (e) 
        (xproduct	
-       	(denote-sql (query-join-query1 query) ctxt)
-       	(denote-sql (query-join-query2 query) ctxt)
+       	(denote-sql (query-join-query1 query) index-map)
+       	(denote-sql (query-join-query2 query) index-map)
        "anonymous"))
      ]
     ; denote rename table
     [(query-rename? query)
-     (let ([q (denote-sql (query-rename-query query) ctxt)])
-       (rename-table (denote-sql (query-rename-query query) ctxt)
+     (let ([q (denote-sql (query-rename-query query) index-map)])
+       (rename-table (denote-sql (query-rename-query query) index-map)
                      (query-rename-table-name query)))]
     ; denote select query
     [(query-select? query) "xx"]))
@@ -58,11 +58,11 @@
 ;;; denote value returns tuple -> value
 (define (denote-value value nmap)
   (cond
-    [(val-const? value) (list 'lambda '(e) (val value))]
+    [(val-const? value) (list 'lambda '(e) (val-const-val value))]
     [(val-column-ref? value)
-     (list 'lambda '(e) (list 'list-ref (hash-ref nmap (column-name value))))]
+     (list 'lambda '(e) (list 'list-ref (hash-ref nmap (val-column-ref-column-name value))))]
     [(val-agg? value)
-     (list 'lambda '(e) (list (agg-func value) (list (denote-sql (query value) nmap) 'e)))])
+     (list 'lambda '(e) (list (val-agg-agg-func value) (list (denote-sql (val-agg-query value) nmap) 'e)))]))
      
 
 ;;; filters
@@ -77,18 +77,18 @@
 (define (denote-filter f nmap)
   (cond
     [(filter-binop? f)
-     (list 'lambda '(e) (op (list (denote-value (val1 f) nmap) 'e)
-                            (list (denote-value (val2 f) nmap) 'e)))]
+     (list 'lambda '(e) ('op (list (denote-value (filter-binop-val1 f) nmap) 'e)
+                            (list (denote-value (filter-binop-val2 f) nmap) 'e)))]
     [(filter-conj? f)
-     (list 'lambda '(e) ('and (list (denote-filter (f1 f) nmap) 'e)
-                              (list (denote-filter (f2 f) nmap) 'e)))]
+     (list 'lambda '(e) ('and (list (denote-filter (filter-conj-f1 f) nmap) 'e)
+                              (list (denote-filter (filter-conj-f2 f) nmap) 'e)))]
     [(filter-disj? f)
-     (list 'lambda '(e) ('or (list (denote-filter (f1 f) nmap) 'e)
-                             (list (denote-filter (f2 f) nmap) 'e)))]
+     (list 'lambda '(e) ('or (list (denote-filter (filter-disj-f1 f) nmap) 'e)
+                             (list (denote-filter (filter-disj-f2 f) nmap) 'e)))]
     [(filter-not? f)
-     (list 'lambda '(e) ('not (list (denote-filter (f1 f) nmap) 'e)))]
+     (list 'lambda '(e) ('not (list (denote-filter (filter-not-f1 f) nmap) 'e)))]
     [(filter-exists? f)
-     (list 'lambda '(e) (list 'if (list 'empty? (list (denote-sql (query f) nmap) 'e)) '#f '#t))]
+     (list 'lambda '(e) (list 'if (list 'empty? (list (denote-sql (filter-exists-query f) nmap) 'e)) '#f '#t))]
     [(filter-empty? f) '(lambda (e) #t)]))
      
 
@@ -109,9 +109,9 @@
   (list (query-named table1))
   (filter-binop "<" (val-column-ref "c1") (val-column-ref "c2"))))
 
-(define q2 (query-rename (query-named table1) "qt"))
+(define q2 (query-rename (query-named table1) "qt" (list "c1" "c2" "c3")))
 
 
-(define q3 (query-join (query-named table1) (query-rename (query-named table1) "t2")))
+(define q3 (query-join (query-named table1) (query-rename (query-named table1) "t2" (list "c1" "c2" "c3"))))
 
 (println (denote-sql q3 '()))
