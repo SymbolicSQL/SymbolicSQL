@@ -61,7 +61,7 @@
                                           (map (lambda (r) (cons (append e (car r)) (cdr r)))
                                                (Table-content ,from-table))))]
                     [new-name "dummy-name"]
-                    [new-schema ,(extract-schema query)])
+                    [new-schema (,extract-schema ,query)])
                 (Table new-name new-schema (dedup-accum content))))))]))
 
 ;; convert schema list to hash map (name -> index)           
