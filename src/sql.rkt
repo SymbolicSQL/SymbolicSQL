@@ -16,7 +16,7 @@
   (cond 
     ; denote named table
     [(query-named? query) 
-       (list 'lambda '(e) '(query-named-table-ref query))]
+       (list 'lambda '(e) (query-named-table-ref query))]
     ; denote join to a racket program
     [(query-join? query) 
      (list 'lambda '(e) 
