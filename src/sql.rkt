@@ -36,7 +36,21 @@
      `(lambda (e)
         (rename-table (,(denote-sql (query-rename-query query) index-map) e) ,(query-rename-table-name query)))]
     ; denote select query
-    [(query-select? query) "xx"]))
+    [(query-select? query)
+     `(lambda (e)
+        ,(let* ([table (query-select-from-query query)]
+                [schema (extract-schema table)]
+                [name-hash (hash-copy index-map)])
+           (map (lambda (col-name idx)
+                  (hash-set! name-hash col-name (+ idx (hash-count index-map))))
+                schema (range (length schema)))
+           (let* ([from-clause (eval (denote-sql table name-hash) ns)]
+                  [where-clause (eval (denote-filter (query-select-where-filter query)) ns)]
+                  [from-table `(,from-clause e)])
+             `(map (lambda (arg) (denote-value arg name-hash))
+                   (filter ,where-clause (map (lambda (r) (append e r))
+                                              from-table))))))]))
+           
 
 ;; query: the sql query to extract schema for
 (define (extract-schema query)
@@ -67,7 +81,7 @@
   (cond
     [(val-const? value) `(lambda (e) ,(val-const-val value))]
     [(val-column-ref? value)
-     `(lambda (e) (list-ref ,(hash-ref nmap (val-column-ref-column-name value))))]
+     `(lambda (e) (list-ref e ,(hash-ref nmap (val-column-ref-column-name value))))]
     [(val-agg? value)
      `(lambda (e) (,(val-agg-agg-func value) (,(denote-sql (val-agg-query value) nmap) e)))]))
      
