@@ -1,6 +1,6 @@
 #lang rosette
 
-(require "evaluator.rkt" "sql.rkt")
+(require "evaluator.rkt")
 
 (provide queries test-table test-table1)
 

@@ -2,6 +2,8 @@
 
 (require "table.rkt" "operators.rkt" "evaluator.rkt")
 
+(provide (all-defined-out))
+
 ;;; define the current name space as ns
 (define-namespace-anchor anc)
 (define ns (namespace-anchor->namespace anc))
@@ -59,7 +61,7 @@
                                           (map (lambda (r) (cons (append e (car r)) (cdr r)))
                                                (Table-content ,from-table))))]
                     [new-name "dummy-name"]
-                    [new-schema (,extract-schema ,query)])
+                    [new-schema ,(extract-schema query)])
                 (Table new-name new-schema (dedup-accum content))))))]))
 
 ;; convert schema list to hash map (name -> index)           
@@ -105,12 +107,12 @@
      `(lambda (e) (,(val-agg-agg-func value) (,(denote-sql (val-agg-query value) nmap) e)))]))
 
 ;;; filters
-(struct filter-binop (op val1 val2))
-(struct filter-conj (f1 f2))
-(struct filter-disj (f1 f2))
-(struct filter-not (f1))
-(struct filter-exists (query))
-(struct filter-empty ())
+(struct filter-binop (op val1 val2) #:transparent)
+(struct filter-conj (f1 f2) #:transparent)
+(struct filter-disj (f1 f2) #:transparent)
+(struct filter-not (f1) #:transparent)
+(struct filter-exists (query) #:transparent)
+(struct filter-empty () #:transparent)
 
 ;;; denote filters returns tuple -> bool
 (define (denote-filter f nmap)
@@ -172,37 +174,42 @@
 
 ;; easy syntax rules to write sql queries
 
-(define (SELECT v q f)
+(define-syntax-rule
+  (SELECT v FROM q WHERE f)
   (query-select v q f))
 
-(define (JOIN q1 q2)
+(define-syntax-rule
+  (JOIN q1 q2)
   (query-join q1 q2))
 
-(define (NAMED t)
+(define-syntax-rule (NAMED t)
   (query-named t))
 
-(define (VAL . v)
-  (map
-   (lambda (x) (cond
-    [(string? x) (val-column-ref x)]
-    [(int? x) (val-const x)]
-    [(val-agg? x) x])) v))
+(define-syntax-rule (AS q [t l])
+  (query-rename q t l))
+
+(define (VAL v)
+  (cond
+    [(string? v) (val-column-ref v)]
+    [(int? v) (val-const v)]
+    [(val-agg? v) v]))
+
+(define (VALS . v)
+  (map (lambda (x) (VAL x)) v))
 
 (define (AGGR aggr-fun q)
   (val-agg aggr-fun q))
 
 (define (BINOP v1 op v2)
-  (filter-binop op v1 v2))
+  (filter-binop op (VAL v1) (VAL v2)))
 
 (define (AND f1 f2)
   (filter-conj f1 f2))
 
+;;(define test-query1
+;;  (SELECT (VALS "t1.c1" "t1.c2" "t1.c3" "t2.c1" "t2.c2" "t2.c3")
+;;   FROM (JOIN (NAMED table1) (AS (NAMED table1) ["t2" '("c1" "c2" "c3")]))
+;;   WHERE (AND (BINOP "t1.c1" < "t2.c2") (BINOP "t1.c3" < "t2.c3"))))
 
-(define qq (SELECT
-  (VAL "t1.c1" "t1.c2")
-  (NAMED test-table1)
-  (BINOP (VAL "t1.c1") > (VAL "t1.c2"))))
-
-(run qq)
-
+;; (run test-query1)
 
