@@ -16,7 +16,7 @@
   (cond 
     ; denote named table
     [(query-named? query) 
-       (list 'lambda '(e) '(query-named-table-ref query))]
+       (list 'lambda '(e) (query-named-table-ref query))]
     ; denote join to a racket program
     [(query-join? query) 
      (list 'lambda '(e) 
@@ -110,11 +110,15 @@
 
 (define q2 (query-rename (query-named table1) "qt" (list "c1" "c2" "c3")))
 
-
 (define q3 (query-join (query-named table1) (query-rename (query-named table1) "t2" (list "c1" "c2" "c3"))))
 
 (define part-of-q3 (query-rename (query-named table1) "t2" (list "c1" "c2" "c3")))
 
-(println (denote-sql part-of-q3 '()))
+;; (print (denote-sql part-of-q3 '()))
 
+(rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) '()) "t2")
 
+;; (define denotation-q3
+;;   '(lambda (e) (rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) e) "t2")) )
+
+;; ((eval denotation-q3) '())
