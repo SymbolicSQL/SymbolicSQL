@@ -1,6 +1,7 @@
 #lang rosette/safe
 
 (provide dedup
+         dedup-accum
 	 projection
 	 cross-prod)
 
@@ -11,6 +12,21 @@
       (let ([ele (car table)])
 	(cons (cons (car ele) 1)
 	      (dedup 
+		(filter 
+		  (lambda (x)
+		    (not (equal? (car ele) (car x))))
+		  (cdr table)))))]))
+
+(define (dedup-accum table)
+  (cond 
+    [(equal? '() table) '()]
+    [else 
+      (let ([ele (car table)])
+	(cons (cons (car ele) (foldl + 0 (map cdr
+                                              (filter (lambda (x)
+                                                        (equal? (car ele) (car x)))
+                                                      table))))
+	      (dedup-accum 
 		(filter 
 		  (lambda (x)
 		    (not (equal? (car ele) (car x))))

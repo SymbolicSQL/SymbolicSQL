@@ -1,6 +1,6 @@
 #lang rosette
 
-(require "table.rkt" "operators.rkt")
+(require "table.rkt" "operators.rkt" "evaluator.rkt")
 
 ;;; define the current name space as ns
 (define-namespace-anchor anc)
@@ -49,14 +49,18 @@
                                        (query-select-where-filter query)
                                        name-hash) ns)]
                   [from-table `(,from-clause e)]
-                  [row-funcs (map (lambda (arg) (denote-value arg name-hash))
+                  [row-funcs (map (lambda (arg) (eval (denote-value arg name-hash) ns))
                                   (query-select-select-args query))]
                   [row-func-wrap (lambda (r)
                                    (map (lambda (f) (f r))
                                         row-funcs))])
-             `(map ,row-func-wrap
-                   (filter ,where-clause (map (lambda (r) (append e (car r)))
-                                              (Table-content ,from-table)))))))]))
+             `(let ([content (map (lambda (r) (cons (,row-func-wrap (car r)) (cdr r)))
+                                  (filter (lambda (r) (,where-clause (car r)))
+                                          (map (lambda (r) (cons (append e (car r)) (cdr r)))
+                                               (Table-content ,from-table))))]
+                    [new-name "dummy-name"]
+                    [new-schema (,extract-schema ,query)])
+                (Table new-name new-schema (dedup-accum content))))))]))
 
 ;; convert schema list to hash map (name -> index)           
 (define (list->hash l)
@@ -143,7 +147,7 @@
 (define q (query-select 
   (list (val-column-ref "t1.c1") (val-column-ref "t1.c2"))
   (query-named table1)
-  (filter-binop "<" (val-column-ref "t1.c1") (val-column-ref "t1.c2"))))
+  (filter-binop < (val-column-ref "t1.c1") (val-column-ref "t1.c2"))))
 
 (define q2 (query-rename (query-named table1) "qt" (list "c1" "c2" "c3")))
 
