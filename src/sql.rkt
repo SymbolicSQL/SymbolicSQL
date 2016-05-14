@@ -131,5 +131,4 @@
 
 ; ((eval (denote-sql q3 '()) ns) '())
 
-
 (extract-schema q3)
