@@ -2,6 +2,10 @@
 
 (require "table.rkt" "operators.rkt")
 
+;;; define the current name space as ns
+(define-namespace-anchor anc)
+(define ns (namespace-anchor->namespace anc))
+
 ;;; query structure
 
 ; select-args : a list of values
@@ -16,7 +20,7 @@
   (cond 
     ; denote named table
     [(query-named? query) 
-       (list 'lambda '(e) (query-named-table-ref query))]
+       (list 'lambda '(e)  (query-named-table-ref query))]
     ; denote join to a racket program
     [(query-join? query) 
      (list 'lambda '(e) 
@@ -118,7 +122,8 @@
 
 (rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) '()) "t2")
 
-;; (define denotation-q3
-;;   '(lambda (e) (rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) e) "t2")) )
+(define denotation-q3
+   '(lambda (e) (rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) e) "t2")) )
 
-;; ((eval denotation-q3) '())
+((eval (denote-sql q3 '()) ns) '())
+
