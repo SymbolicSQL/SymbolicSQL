@@ -65,11 +65,11 @@
 ;;; denote value returns tuple -> value
 (define (denote-value value nmap)
   (cond
-    [(val-const? value) (list 'lambda '(e) (val-const-val value))]
+    [(val-const? value) `(lambda (e) ,(val-const-val value))]
     [(val-column-ref? value)
-     (list 'lambda '(e) (list 'list-ref (hash-ref nmap (val-column-ref-column-name value))))]
+     `(lambda (e) (list-ref ,(hash-ref nmap (val-column-ref-column-name value))))]
     [(val-agg? value)
-     (list 'lambda '(e) (list (val-agg-agg-func value) (list (denote-sql (val-agg-query value) nmap) 'e)))]))
+     `(lambda (e) (,(val-agg-agg-func value) (,(denote-sql (val-agg-query value) nmap) e)))]))
      
 
 ;;; filters
@@ -84,19 +84,19 @@
 (define (denote-filter f nmap)
   (cond
     [(filter-binop? f)
-     (list 'lambda '(e) ('op (list (denote-value (filter-binop-val1 f) nmap) 'e)
-                            (list (denote-value (filter-binop-val2 f) nmap) 'e)))]
+     `(lambda (e) (op (,(denote-value (filter-binop-val1 f) nmap) e)
+                      (,(denote-value (filter-binop-val2 f) nmap) e)))]
     [(filter-conj? f)
-     (list 'lambda '(e) ('and (list (denote-filter (filter-conj-f1 f) nmap) 'e)
-                              (list (denote-filter (filter-conj-f2 f) nmap) 'e)))]
+     `(lambda (e) (and (,(denote-filter (filter-conj-f1 f) nmap) e)
+                       (,(denote-filter (filter-conj-f2 f) nmap) e)))]
     [(filter-disj? f)
-     (list 'lambda '(e) ('or (list (denote-filter (filter-disj-f1 f) nmap) 'e)
-                             (list (denote-filter (filter-disj-f2 f) nmap) 'e)))]
+     `(lambda (e) (or (,(denote-filter (filter-disj-f1 f) nmap) e)
+                      (,(denote-filter (filter-disj-f2 f) nmap) e)))]
     [(filter-not? f)
-     (list 'lambda '(e) ('not (list (denote-filter (filter-not-f1 f) nmap) 'e)))]
+     `(lambda (e) (not (,(denote-filter (filter-not-f1 f) nmap) e)))]
     [(filter-exists? f)
-     (list 'lambda '(e) (list 'if (list 'empty? (list (denote-sql (filter-exists-query f) nmap) 'e)) '#f '#t))]
-    [(filter-empty? f) '(lambda (e) #t)]))
+     `(lambda (e) (if (empty? (,(denote-sql (filter-exists-query f) nmap) e)) #f #t))]
+    [(filter-empty? f) `(lambda (e) #t)]))
      
 
 ;;; for test purpose
