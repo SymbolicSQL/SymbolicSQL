@@ -1,6 +1,6 @@
 #lang rosette
 
-(require "evaluator.rkt")
+(require "evaluator.rkt" "sql.rkt")
 
 (provide queries test-table test-table1)
 
@@ -97,14 +97,16 @@
 ; WHERE c1 > 1
 
 ;(SELECT 
-;  (t1.c1 (AGGR MAX (SELECT (t2.c2) (AS table1 t2) (t2.c1 == t1.c1))))
-;  (AS table1 t1)
-;  (> t1.1 1))
+;  (t1.c1 (MAX (SELECT (t2.c2) (table1 AS t2) (t2.c1 == t1.c1))))
+;  (FROM table1 AS t1)
+;  (WHERE t1.1 > 1))
 
-(define test-query-001
-  (query-select
-    (list 
-      (val-column-ref "t1.c1") 
-      (val-agg agg-max 
-	       (query-select (list (val-column-ref "t2.c2"))
-			     (query-rename ))))))
+;(define test-query-001
+;  (query-select
+;    `(,(val-column-ref "t1.c1") 
+;      ,(val-agg agg-max 
+;	        (query-select 
+;		  `((val-column-ref "t2.c2"))
+;		  (query-rename (query-named table1) "t2" `("c1" "c2" "c3")))))))
+
+

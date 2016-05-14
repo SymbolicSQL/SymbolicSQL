@@ -11,10 +11,10 @@
 ; select-args : a list of values
 ; from-queries : a list of tables/subqueries
 ; where-filter : a filter
-(struct query-select (select-args from-query where-filter))
-(struct query-join (query1 query2))
-(struct query-named (table-ref))
-(struct query-rename (query table-name column-names))
+(struct query-select (select-args from-query where-filter) #:transparent)
+(struct query-join (query1 query2) #:transparent)
+(struct query-named (table-ref) #:transparent)
+(struct query-rename (query table-name column-names) #:transparent)
 
 ;; query: the sql query to denote to
 ;; index-map: the mapping of the names to their index in the context, which is a hash map
@@ -103,7 +103,6 @@
      `(lambda (e) (list-ref e ,(hash-ref nmap (val-column-ref-column-name value))))]
     [(val-agg? value)
      `(lambda (e) (,(val-agg-agg-func value) (,(denote-sql (val-agg-query value) nmap) e)))]))
-     
 
 ;;; filters
 (struct filter-binop (op val1 val2))
@@ -130,7 +129,10 @@
     [(filter-exists? f)
      `(lambda (e) (if (empty? (,(denote-sql (filter-exists-query f) nmap) e)) #f #t))]
     [(filter-empty? f) `(lambda (e) #t)]))
-     
+
+(define (run q)
+  (let ([racket-q (denote-sql q (make-hash))])
+    ((eval racket-q ns) '())))
 
 ;;; for test purpose
 
@@ -167,3 +169,40 @@
 (extract-schema q3)
 (denote-sql q (make-hash))
 ((eval (denote-sql q (make-hash)) ns) '())
+
+;; easy syntax rules to write sql queries
+
+(define (SELECT v q f)
+  (query-select v q f))
+
+(define (JOIN q1 q2)
+  (query-join q1 q2))
+
+(define (NAMED t)
+  (query-named t))
+
+(define (VAL . v)
+  (map
+   (lambda (x) (cond
+    [(string? x) (val-column-ref x)]
+    [(int? x) (val-const x)]
+    [(val-agg? x) x])) v))
+
+(define (AGGR aggr-fun q)
+  (val-agg aggr-fun q))
+
+(define (BINOP v1 op v2)
+  (filter-binop op v1 v2))
+
+(define (AND f1 f2)
+  (filter-conj f1 f2))
+
+
+(define qq (SELECT
+  (VAL "t1.c1" "t1.c2")
+  (NAMED test-table1)
+  (BINOP (VAL "t1.c1") > (VAL "t1.c2"))))
+
+(run qq)
+
+
