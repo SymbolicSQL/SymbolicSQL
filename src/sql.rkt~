@@ -16,19 +16,20 @@
   (cond 
     ; denote named table
     [(query-named? query) 
-       (list 'lambda '(e) (query-named-table-ref query))]
+       '(lambda (e) (query-named-table-ref query))]
     ; denote join to a racket program
     [(query-join? query) 
      (list 'lambda '(e) 
        (list 'xproduct	
-       	(list (denote-sql (query-join-query1 query) index-map) 'e)
-       	(list (denote-sql (query-join-query2 query) index-map) 'e)
+       	(denote-sql (query-join-query1 query) index-map)
+       	(denote-sql (query-join-query2 query) index-map)
        '"anonymous"))
      ]
     ; denote rename table
     [(query-rename? query)
      (list 'lambda '(e)
-	     (list 'rename-table (list (denote-sql (query-rename-query query) index-map) 'e) (query-rename-table-name query)))]
+	   (let ([q (denote-sql (query-rename-query query) index-map)])
+	     (list 'rename-table q (query-rename-table-name query))))]
     ; denote select query
     [(query-select? query) "xx"]))
        
@@ -113,8 +114,4 @@
 
 (define q3 (query-join (query-named table1) (query-rename (query-named table1) "t2" (list "c1" "c2" "c3"))))
 
-(define part-of-qe )
-
 (println (denote-sql q3 '()))
-
-
