@@ -16,37 +16,41 @@
 (struct query-named (table-ref))
 (struct query-rename (query table-name column-names))
 
+;; query: the sql query to denote to
+;; index-map: the mapping of the names to their index in the context, which is a hash map
+;; result: a quasi-quated lambda calculas representing the denotation of the sql query
 (define (denote-sql query index-map)
   (cond 
     ; denote named table
     [(query-named? query) 
-       (list 'lambda '(e)  (query-named-table-ref query))]
+       `(lambda (e) ,(query-named-table-ref query))]
     ; denote join to a racket program
     [(query-join? query) 
-     (list 'lambda '(e) 
-       (list 'xproduct	
-       	(list (denote-sql (query-join-query1 query) index-map) 'e)
-       	(list (denote-sql (query-join-query2 query) index-map) 'e)
-       '"anonymous"))
-     ]
+     `(lambda (e) 
+       (xproduct	
+       	(,(denote-sql (query-join-query1 query) index-map) e)
+       	(,(denote-sql (query-join-query2 query) index-map) e)
+       "anonymous"))]
     ; denote rename table
     [(query-rename? query)
-     (list 'lambda '(e)
-	     (list 'rename-table (list (denote-sql (query-rename-query query) index-map) 'e) (query-rename-table-name query)))]
+     `(lambda (e)
+        (rename-table (,(denote-sql (query-rename-query query) index-map) e) ,(query-rename-table-name query)))]
     ; denote select query
     [(query-select? query) "xx"]))
-       
+
+;; query: the sql query to extract schema for
 (define (extract-schema query)
   (cond 
-    [(query-named? query) 
-     (get-schema (query-named-table-ref query))]
+    [(query-named? query)
+     (get-qualified-schema (query-named-table-ref query))]
+     ;(map (lambda (x) (string-append (get-table-name (query-named-table-ref query)) "." x))(get-schema (query-named-table-ref query)))]
     [(query-join? query) 
      (append (extract-schema (query-join-query1 query)) 
 	     (extract-schema (query-join-query2 query)))]
     [(query-rename? query)
      (let ([tn (query-rename-table-name query)]
 	   [cnames (query-rename-column-names query)])
-       (map (lambda (x) (string-append tn cnames)) cnames))]
+       (map (lambda (x) (string-append tn "." x)) cnames))]
     [(query-select? query)
      (map (lambda (x) "dummy") (query-select-select-args query))]))
 
@@ -125,5 +129,7 @@
 (define denotation-q3
    '(lambda (e) (rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) e) "t2")) )
 
-((eval (denote-sql q3 '()) ns) '())
+; ((eval (denote-sql q3 '()) ns) '())
 
+
+(extract-schema q3)

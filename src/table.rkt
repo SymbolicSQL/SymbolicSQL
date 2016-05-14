@@ -10,7 +10,11 @@
   (rename-table table-interface new-name)
   ; get schema as a list of column names
   (get-schema table-interface)
-  ; rename the column names
+  ; get the name of the table
+  (get-table-name table-interface)
+  ; get the qualified schema of the table
+  (get-qualified-schema table-interface)
+  ; rename the column names 
   (rename-cols table-interface col-names)
   ; get the lambda function that get the colum from the table
   (get-col-lambda table-interface col-name))
@@ -32,8 +36,14 @@
      (match-define (Table name schema content) self)
      (Table new-name schema content))
    
+   (define (get-table-name self)
+     (Table-name self))
+
    (define (get-schema self)
      (Table-schema self))
+
+   (define (get-qualified-schema self)
+     (map (lambda (x) (string-append (get-table-name self) "." x)) (get-schema self)))
 
    (define (rename-cols self col-names)
      (when (not (= (length col-names (Table-schema self))))
