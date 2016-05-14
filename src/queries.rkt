@@ -91,3 +91,20 @@
 ; (q3 test-table1)
 
 ; (apply max (flatten-once (map (lambda (t) (car t)) (q3-subquery test-table1 1 2))))
+
+; SELECT t1.c1, MAX(SELECT t2.c2 FROM table1 AS t2[c1,c2] WHERE t2.c1 = t1.c1)
+; FROM table1 AS t1[c1,c2]
+; WHERE c1 > 1
+
+;(SELECT 
+;  (t1.c1 (AGGR MAX (SELECT (t2.c2) (AS table1 t2) (t2.c1 == t1.c1))))
+;  (AS table1 t1)
+;  (> t1.1 1))
+
+(define test-query-001
+  (query-select
+    (list 
+      (val-column-ref "t1.c1") 
+      (val-agg agg-max 
+	       (query-select (list (val-column-ref "t2.c2"))
+			     (query-rename ))))))
