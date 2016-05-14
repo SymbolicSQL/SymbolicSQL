@@ -44,13 +44,28 @@
            (map (lambda (col-name idx)
                   (hash-set! name-hash col-name (+ idx (hash-count index-map))))
                 schema (range (length schema)))
-           (let* ([from-clause (eval (denote-sql table name-hash) ns)]
-                  [where-clause (eval (denote-filter (query-select-where-filter query)) ns)]
-                  [from-table `(,from-clause e)])
-             `(map (lambda (arg) (denote-value arg name-hash))
-                   (filter ,where-clause (map (lambda (r) (append e r))
-                                              from-table))))))]))
-           
+           (let* ([from-clause (eval (denote-sql table index-map) ns)]
+                  [where-clause (eval (denote-filter
+                                       (query-select-where-filter query)
+                                       name-hash) ns)]
+                  [from-table `(,from-clause e)]
+                  [row-funcs (map (lambda (arg) (denote-value arg name-hash))
+                                  (query-select-select-args query))]
+                  [row-func-wrap (lambda (r)
+                                   (map (lambda (f) (f r))
+                                        row-funcs))])
+             `(map ,row-func-wrap
+                   (filter ,where-clause (map (lambda (r) (append e (car r)))
+                                              (Table-content ,from-table)))))))]))
+
+;; convert schema list to hash map (name -> index)           
+(define (list->hash l)
+  (let ([h (make-hash)])
+    (map (lambda (name idx)
+           (hash-set! h name idx))
+         l
+         (range (length l)))
+    h))
 
 ;; query: the sql query to extract schema for
 (define (extract-schema query)
@@ -98,8 +113,8 @@
 (define (denote-filter f nmap)
   (cond
     [(filter-binop? f)
-     `(lambda (e) (op (,(denote-value (filter-binop-val1 f) nmap) e)
-                      (,(denote-value (filter-binop-val2 f) nmap) e)))]
+     `(lambda (e) (,(filter-binop-op f) (,(denote-value (filter-binop-val1 f) nmap) e)
+                                        (,(denote-value (filter-binop-val2 f) nmap) e)))]
     [(filter-conj? f)
      `(lambda (e) (and (,(denote-filter (filter-conj-f1 f) nmap) e)
                        (,(denote-filter (filter-conj-f2 f) nmap) e)))]
@@ -126,9 +141,9 @@
 (define table1 (Table "t1" (list "c1" "c2" "c3") test-table1))
 
 (define q (query-select 
-  (list (val-column-ref "c1") (val-column-ref "c2"))
-  (list (query-named table1))
-  (filter-binop "<" (val-column-ref "c1") (val-column-ref "c2"))))
+  (list (val-column-ref "t1.c1") (val-column-ref "t1.c2"))
+  (query-named table1)
+  (filter-binop "<" (val-column-ref "t1.c1") (val-column-ref "t1.c2"))))
 
 (define q2 (query-rename (query-named table1) "qt" (list "c1" "c2" "c3")))
 
@@ -146,3 +161,5 @@
 ; ((eval (denote-sql q3 '()) ns) '())
 
 (extract-schema q3)
+(denote-sql q (make-hash))
+((eval (denote-sql q (make-hash)) ns) '())
