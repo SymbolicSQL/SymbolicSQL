@@ -57,7 +57,6 @@
 (define try-symbolic-2
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
 	       FROM   (NAMED symbolic-table)
-<<<<<<< HEAD
 	          WHERE  (AND (BINOP "t1.c1" < "t1.c3") (BINOP "t1.c1" < "t1.c2"))))
 
 (println " --------------- ")
