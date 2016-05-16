@@ -35,7 +35,14 @@
 (define (contain l1 l2)
   (cond
     [(empty? l1) #t]
-    [ else (and (element-contain (first l1) l2) (contain (rest l1) l2))]
+    [else (and (element-contain (first l1) l2) (contain (rest l1) l2))]
+))
+
+(define (contain-fueled l1 l2 fuel)
+  (cond
+    [(<= fuel 0) #f]
+    [(empty? l1) #t]
+    [else (and (element-contain (first l1) l2) (contain-fueled (rest l1) l2 (- fuel 1)))]
 ))
 
 ; a new test-table

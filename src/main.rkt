@@ -49,6 +49,11 @@
 
 (define symbolic-table (Table "t1" (list "c1" "c2" "c3") sym-content))
 
+(define try-symbolic-0
+    (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
+	       FROM   (NAMED symbolic-table)
+	          WHERE  (AND (BINOP "t1.c1" < "t1.c2") (BINOP "t1.c1" < "t1.c2"))))
+
 (define try-symbolic-1
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
 	       FROM   (NAMED symbolic-table)
@@ -70,6 +75,9 @@
 (define (same1)
   (assert (eq? (get-content (run try-symbolic-1)) (get-content (run try-symbolic-2)))))
 
+(define (same-func q1 q2)
+  (assert (bag-equal (get-content (run q1)) (get-content (run q2)))))
+
 (println " --------------- ")
 
 (define (same)
@@ -81,6 +89,8 @@
 ;(define cex (verify (same)))
 ;(evaluate sym-content cex)
 (verify (same1))
+(verify (same-func try-symbolic-0 try-symbolic-1))
+(verify (same-func try-symbolic-3 try-symbolic-4))
 
 ; (define (simple-same) (assert (eq? sym-content sym-content)))
 ; (verify (simple-same))
