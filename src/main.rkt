@@ -69,7 +69,6 @@
 
 (define (same1)
   (assert (eq? (get-content (run try-symbolic-1)) (get-content (run try-symbolic-2)))))
-	          WHERE  (AND (BINOP "t1.c2" > "t1.c1") (BINOP "t1.c3" > "t1.c1"))))
 
 (println " --------------- ")
 
