@@ -1,6 +1,6 @@
 #lang rosette
 
-(require racket "queries.rkt")
+(require "queries.rkt")
 
 (provide (all-defined-out))
 ;(provide tuple-in table-sum bag-contain bag-equal)
