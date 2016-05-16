@@ -1,6 +1,6 @@
 #lang rosette 
 
-(require "sql.rkt" "table.rkt")
+(require "equal.rkt" "sql.rkt" "table.rkt")
 
 (provide 
   sym-table-gen)
@@ -47,7 +47,7 @@
 				      (cons (list 1 2 3) 1)
 				            (cons (list 2 1 0) 3)))
 
-(define symbolic-table (Table "t1" (list "c1" "c2" "c3") table-content))
+(define symbolic-table (Table "t1" (list "c1" "c2" "c3") sym-content))
 
 (define try-symbolic-1
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
@@ -57,16 +57,25 @@
 (define try-symbolic-2
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
 	       FROM   (NAMED symbolic-table)
-	          WHERE  (AND (BINOP "t1.c1" < "t1.c2") (BINOP "t1.c1" < "t1.c3"))))
+	          WHERE  (AND (BINOP "t1.c1" < "t1.c3") (BINOP "t1.c1" < "t1.c2"))))
 
 (println " --------------- ")
 
-;(define (same)
-;  (assert (eq? (run try-symbolic-1) (run try-symbolic-2))))
+(define try-symbolic-3
+  (NAMED symbolic-table))
+
+(define try-symbolic-4
+  (NAMED symbolic-table))
+
+(define (same)
+  (assert (eq? (get-content (run try-symbolic-1)) (get-content (run try-symbolic-2)))))
 
 ;(run try-symbolic-1)
 ;(run try-symbolic-2)
 
-; (define cex (verify (same)))
-; (evaluate sym-content cex)
-; (verify (same))
+;(define cex (verify (same)))
+;(evaluate sym-content cex)
+(verify (same))
+
+; (define (simple-same) (assert (eq? sym-content sym-content)))
+; (verify (simple-same))

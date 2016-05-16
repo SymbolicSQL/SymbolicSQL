@@ -17,7 +17,9 @@
   ; rename the column names 
   (rename-cols table-interface col-names)
   ; get the lambda function that get the colum from the table
-  (get-col-lambda table-interface col-name))
+  (get-col-lambda table-interface col-name)
+  ; get the content of the table
+  (get-content table-interface))
 
 (define (find-index ele l)
   (letrec ([aux-func
@@ -41,6 +43,9 @@
 
    (define (get-schema self)
      (Table-schema self))
+
+   (define (get-content self)
+     (Table-content self))
 
    (define (get-qualified-schema self)
      (map (lambda (x) (string-append (get-table-name self) "." x)) (get-schema self)))

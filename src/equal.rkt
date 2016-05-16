@@ -2,6 +2,7 @@
 
 (require racket "queries.rkt")
 
+(provide (all-defined-out))
 ;(provide tuple-in table-sum bag-contain bag-equal)
 
 ; sum the multiplicity of tuples in a table
