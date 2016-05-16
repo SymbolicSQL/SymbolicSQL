@@ -1,1 +1,0 @@
-("6.4" ("b9ce0e051c3e6fc730eb1693345a74005b438468" . "85dae362e9865a983d011cdd93d342de2aa256ab") #"/Users/clwang/CourseWork/CSE507/project/SymbolicSQL/src/evaluator.rkt" (collects #"racket" #"runtime-config.rkt") (collects #"rosette" #"lang" #"reader.rkt") (collects #"rosette" #"main.rkt"))
