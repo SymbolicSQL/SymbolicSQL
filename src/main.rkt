@@ -57,6 +57,7 @@
 (define try-symbolic-2
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
 	       FROM   (NAMED symbolic-table)
+<<<<<<< HEAD
 	          WHERE  (AND (BINOP "t1.c1" < "t1.c3") (BINOP "t1.c1" < "t1.c2"))))
 
 (println " --------------- ")
@@ -67,15 +68,23 @@
 (define try-symbolic-4
   (NAMED symbolic-table))
 
-(define (same)
+(define (same1)
   (assert (eq? (get-content (run try-symbolic-1)) (get-content (run try-symbolic-2)))))
+	          WHERE  (AND (BINOP "t1.c2" > "t1.c1") (BINOP "t1.c3" > "t1.c1"))))
 
-;(run try-symbolic-1)
-;(run try-symbolic-2)
+(println " --------------- ")
+
+(define (same)
+  (assert (equal? (run try-symbolic-1) (run try-symbolic-2))))
+
+(run try-symbolic-1)
+(run try-symbolic-2)
 
 ;(define cex (verify (same)))
 ;(evaluate sym-content cex)
-(verify (same))
+(verify (same1))
 
 ; (define (simple-same) (assert (eq? sym-content sym-content)))
 ; (verify (simple-same))
+;; (define cex (verify (same)))
+;; (evaluate sym-content cex)
