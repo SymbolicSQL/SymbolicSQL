@@ -11,8 +11,13 @@
 
 (define sym-content
   (list 
-    (cons (list (sv) (sv) (sv)) (sv))
-    (cons (list (sv) (sv) (sv)) (sv))))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))))
 
 (define (sym-table-gen num-col num-unique-rows)
   (let ([gen-list (lambda (proc n)
@@ -83,8 +88,8 @@
 (define (same)
   (assert (equal? (run try-symbolic-1) (run try-symbolic-2))))
 
-(run try-symbolic-1)
-(run try-symbolic-2)
+; (run try-symbolic-1)
+; (run try-symbolic-2)
 
 ;(define cex (verify (same)))
 ;(evaluate sym-content cex)
