@@ -5,6 +5,16 @@
 (define (same q1 q2)
     (assert (bag-equal (get-content (run q1)) (get-content (run q2)))))
 
+(define (sv)
+     (define-symbolic* y integer?) ; creates a different constant when evaluated
+         y)
+
+(define sym-content
+    (list
+      (cons (list (sv) (sv) (sv)) (sv))
+      (cons (list (sv) (sv) (sv)) (sv))
+      (cons (list (sv) (sv) (sv)) (sv))))
+
 (define content
     (list
       (cons (list 1 1 2) 2)
@@ -12,7 +22,7 @@
       (cons (list 1 2 1) 1)
       (cons (list 2 1 0) 3)))
 
-(define sym-content (gen-sym-schema 3 5))
+; (define sym-content (gen-sym-schema 3 5))
 
 (define symbolic-t1 (Table "t1" (list "c1" "c2" "c3") sym-content))    
 (define symbolic-t2 (Table "t2" (list "c4" "c5" "c6") sym-content))    
