@@ -20,7 +20,7 @@
 (define t1 (Table "t1" (list "c1" "c2" "c3") content))
 (define t2 (Table "t2" (list "c4" "c5" "c6") content))
 
-(define q1
+ddd(define q1
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3" "t3.c4" "t3.c5" "t3.c6")
        FROM (JOIN (NAMED t1) 
 		   (AS (SELECT  (VALS "t2.c4" "t2.c5" "t2.c6")

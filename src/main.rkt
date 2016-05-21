@@ -62,8 +62,8 @@
 
 (define try-symbolic-0
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
-	       FROM   (NAMED symbolic-table)
-	          WHERE  (AND (BINOP "t1.c1" < "t1.c2") (BINOP "t1.c1" < "t1.c2"))))
+       FROM   (NAMED symbolic-table)	          
+      WHERE  (AND (BINOP "t1.c1" < "t1.c2") (BINOP "t1.c1" < "t1.c2"))))
 
 (define try-symbolic-1
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
