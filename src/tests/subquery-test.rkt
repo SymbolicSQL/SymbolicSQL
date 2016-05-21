@@ -22,18 +22,18 @@
 
 (define q1
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3" "t3.c4" "t3.c5" "t3.c6")
-       FROM (JOIN (NAMED t1) 
+       FROM (JOIN (NAMED symbolic-t1) 
 		   (AS (SELECT  (VALS "t2.c4" "t2.c5" "t2.c6")
-			FROM  (NAMED t2)				                     
+			FROM  (NAMED symbolic-t2)				                     
 			WHERE (AND (BINOP "t2.c5" >= "t2.c4") (BINOP "t2.c5" <= "t2.c6"))) ["t3" (list "c4" "c5" "c6")]))
       WHERE (BINOP "t1.c1" eq? "t3.c4")))
 
 (define q2
   (SELECT (VALS "t1.c1" "t1.c2" "t1.c3" "t2.c4" "t2.c5" "t2.c6")
-     FROM (JOIN (NAMED t1) (NAMED t2))
+     FROM (JOIN (NAMED symbolic-t1) (NAMED symbolic-t2))
     WHERE (AND (BINOP "t1.c1" eq? "t2.c4") (AND (BINOP "t2.c5" >= "t2.c4") (BINOP "t2.c5" <= "t2.c6")))))
 
 (run q1)
 (run q2)
 
-;(verify (same q1 q2))
+(verify (same q1 q2))
