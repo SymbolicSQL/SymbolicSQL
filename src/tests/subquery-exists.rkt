@@ -9,10 +9,6 @@
      (define-symbolic* y integer?) ; creates a different constant when evaluated
          y)
 
-(define sym-content
-    (list
-      (cons (list (sv) (sv) (sv)) (sv))))
-
 (define content
     (list
       (cons (list 1 1 2) 2)
@@ -20,15 +16,26 @@
       (cons (list 1 2 1) 1)
       (cons (list 2 1 0) 3)))
 
+(define acontent
+    (list
+      (cons (list 1 0 1) 8)))
+
+
 ; (define sym-content (gen-sym-schema 3 5))
 
-(define Sym-Emp (Table "Emp" (list "Name" "Emp" "Dept") sym-content))    
-(define Sym-Dept (Table "Dept" (list "Dept" "Mgr" "Loc") sym-content))    
+(define sEmp (Table "Emp" (list "Name" "Emp" "Dept") (gen-sym-schema 3 2)))    
+(define sDept (Table "Dept" (list "Dept" "Mgr" "Loc") (gen-sym-schema 3 2)))    
 
-(define Emp (Table "Emp" (list "Name" "Emp" "Dept") content))    
-(define Dept (Table "Dept" (list "Dept" "Mgr" "Loc") content))    
+(define Emp (Table "Emp" (list "Name" "Emp" "Dept") acontent))    
+(define Dept (Table "Dept" (list "Dept" "Mgr" "Loc") acontent))    
 
 (define one-sv (sv))
+	    
+(define subq (SELECT (VALS "Dept.Dept")
+	FROM (NAMED Dept)
+	WHERE (AND (AND (BINOP 0 eq? "Dept.Mgr") (BINOP 1 eq? "Dept.Dept")) (BINOP "Dept.Loc" eq? 1))))
+
+(run subq)
 
 (define q1
   (SELECT (VALS "Emp.Name")
