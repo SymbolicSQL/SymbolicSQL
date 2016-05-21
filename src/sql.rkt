@@ -138,39 +138,7 @@
 
 ;;; for test purpose
 
-(define test-table1
-    (list
-      (cons (list 1 1 2) 2)
-      (cons (list 1 1 2) 2)
-      (cons (list 0 1 2) 2)
-      (cons (list 1 2 1) 1)
-      (cons (list 1 2 3) 1)
-      (cons (list 2 1 0) 3)))
-(define table1 (Table "t1" (list "c1" "c2" "c3") test-table1))
-
-(define q (query-select 
-  (list (val-column-ref "t1.c1") (val-column-ref "t1.c2"))
-  (query-named table1)
-  (filter-binop < (val-column-ref "t1.c1") (val-column-ref "t1.c2"))))
-
-(define q2 (query-rename (query-named table1) "qt" (list "c1" "c2" "c3")))
-
-(define q3 (query-join (query-named table1) (query-rename (query-named table1) "t2" (list "c1" "c2" "c3"))))
-
-(define part-of-q3 (query-rename (query-named table1) "t2" (list "c1" "c2" "c3")))
-
 ;; (print (denote-sql part-of-q3 '()))
-
-(rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) '()) "t2")
-
-(define denotation-q3
-   '(lambda (e) (rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) e) "t2")) )
-
-; ((eval (denote-sql q3 '()) ns) '())
-
-(extract-schema q3)
-(denote-sql q (make-hash))
-((eval (denote-sql q (make-hash)) ns) '())
 
 ;; easy syntax rules to write sql queries
 
@@ -212,3 +180,36 @@
 ;;   WHERE (AND (BINOP "t1.c1" < "t2.c2") (BINOP "t1.c3" < "t2.c3"))))
 
 ;; (run test-query1)
+
+; (rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) '()) "t2")
+
+; (define denotation-q3
+;   '(lambda (e) (rename-table ((lambda (e) (Table "t1" (list "c1" "c2" "c3") '())) e) "t2")) )
+
+; ((eval (denote-sql q3 '()) ns) '())
+
+; (extract-schema q3)
+; (denote-sql q (make-hash))
+; ((eval (denote-sql q (make-hash)) ns) '())
+
+
+; (define test-table1
+;    (list
+;      (cons (list 1 1 2) 2)
+;      (cons (list 1 1 2) 2)
+;      (cons (list 0 1 2) 2)
+;      (cons (list 1 2 1) 1)
+;      (cons (list 1 2 3) 1)
+;      (cons (list 2 1 0) 3)))
+;(define table1 (Table "t1" (list "c1" "c2" "c3") test-table1))
+
+;(define q (query-select 
+;  (list (val-column-ref "t1.c1") (val-column-ref "t1.c2"))
+;  (query-named table1)
+;  (filter-binop < (val-column-ref "t1.c1") (val-column-ref "t1.c2"))))
+
+;(define q2 (query-rename (query-named table1) "qt" (list "c1" "c2" "c3")))
+
+;(define q3 (query-join (query-named table1) (query-rename (query-named table1) "t2" (list "c1" "c2" "c3"))))
+
+;(define part-of-q3 (query-rename (query-named table1) "t2" (list "c1" "c2" "c3")))
