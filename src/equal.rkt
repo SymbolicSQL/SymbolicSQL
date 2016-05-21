@@ -1,7 +1,5 @@
 #lang rosette
 
-(require "queries.rkt")
-
 (provide (all-defined-out))
 ;(provide tuple-in table-sum bag-contain bag-equal)
 
@@ -45,20 +43,9 @@
     [else (and (element-contain (first l1) l2) (contain-fueled (rest l1) l2 (- fuel 1)))]
 ))
 
-; a new test-table
-(define test-table2
-  (list
-    (cons (list 1 1 2) 1)
-    (cons (list 1 1 2) 1)
-    (cons (list 0 1 2) 2)	          
-    (cons (list 1 2 1) 1)
-    (cons (list 2 1 0) 3)))
-
 ; bag equal definition
 (define (bag-equal table1 table2)
   (let ([l1 (table-sum table1)])
     (let ([l2 (table-sum table2)])
       (and (contain l1 l2) (contain l2 l1)))))
  
-(println (bag-equal test-table test-table1))
-(println (bag-equal test-table test-table2))
