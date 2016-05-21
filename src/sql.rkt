@@ -171,6 +171,9 @@
 (define (BINOP v1 op v2)
   (filter-binop op (VAL v1) (VAL v2)))
 
+(define-syntax-rule (EXISTS q)
+  (filter-exists q))
+
 (define (AND f1 f2)
   (filter-conj f1 f2))
 

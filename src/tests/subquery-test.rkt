@@ -11,7 +11,6 @@
 
 (define sym-content
     (list
-      (cons (list (sv) (sv) (sv)) (sv))
       (cons (list (sv) (sv) (sv)) (sv))))
 
 (define content
