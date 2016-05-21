@@ -1,9 +1,19 @@
-#lang rosette/safe
+#lang rosette
 
-(provide dedup
+(provide gen-sym-schema
+         dedup
          dedup-accum
 	 projection
 	 cross-prod)
+
+(define (gen-sv)
+  (define-symbolic* sv integer?)
+  sv)
+
+(define (gen-sym-schema num-col num-row)
+  (let ([gen-row (lambda (x)
+                   (cons (map (lambda (x) (gen-sv)) (range num-col)) (gen-sv)))])
+    (map gen-row (range num-row))))
 
 (define (dedup table)
   (cond 
