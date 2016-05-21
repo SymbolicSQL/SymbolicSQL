@@ -6,12 +6,17 @@
 
 ;; rawTable -> rawTable -> rawTable
 (define (xproduct-raw a b)
-  (let ([imr (cartesian-product a b)])
+  (let ([imr (cartes-prod a b)])
     (map (lambda (x)
            (cons (append (car (car x)) (car (second x))) (* (cdr (car x)) (cdr (second x))))) imr
          )
     )
   )
+
+(define (cartes-prod a b)
+  (let ([one-v-many (lambda (x)
+                      (map (lambda (e) (list x e)) b))])
+    (foldr append '() (map one-v-many a))))
 
 ;; Table -> Table -> Table
 (define (xproduct a b name)
