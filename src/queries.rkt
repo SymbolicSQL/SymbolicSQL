@@ -109,3 +109,17 @@
 ;		  `((val-column-ref "t2.c2"))
 ;		  (query-rename (query-named table1) "t2" `("c1" "c2" "c3")))))))
 
+; commutativity of selection query 1
+(define selection-commute-q1
+  (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
+          FROM  (AS (SELECT (VALS "t1.c1" "t2.c2" "t1.c3")
+                                FROM (NAMED t1)
+                                WHERE "t1.c1" < "t1.c2")
+                    ["t2", '("c1", "c2", "c3")])
+          WHERE  (BINOP "t2.c1" < "t1.c3")))
+
+; commutativity of selection query 2
+(define selection-commute-q2
+    (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
+	       FROM   (NAMED t1)
+	          WHERE  (AND (BINOP "t1.c1" < "t1.c2") (BINOP "t1.c1" < "t1.c3"))))
