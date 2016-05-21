@@ -17,6 +17,12 @@
     (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
     (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
     (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
+    (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))
     (cons (list (sv) (sv) (sv) (sv) (sv) (sv)) (sv))))
 
 (define (sym-table-gen num-col num-unique-rows)
@@ -66,8 +72,8 @@
 
 (define try-symbolic-2
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3")
-	       FROM   (NAMED symbolic-table)
-	          WHERE  (AND (BINOP "t1.c1" < "t1.c3") (BINOP "t1.c1" < "t1.c2"))))
+      FROM   (NAMED symbolic-table)
+      WHERE  (AND (BINOP "t1.c1" < "t1.c3") (BINOP "t1.c1" < "t1.c2"))))
 
 (println " --------------- ")
 

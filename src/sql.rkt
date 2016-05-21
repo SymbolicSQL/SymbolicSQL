@@ -213,3 +213,29 @@
 
 ;; (run test-query1)
 
+(define concrete-t1
+  (list
+    (cons (list 1 1 2) 2)
+    (cons (list 0 1 2) 2)	          
+    (cons (list 1 2 1) 1)
+    (cons (list 2 1 0) 3)))
+(define t1 (Table "t1" (list "c1" "c2" "c3") concrete-t1))
+(define t2 (Table "t2" (list "c4" "c5" "c6") concrete-t1))
+
+(define qq (AS (SELECT  (VALS "t2.c4" "t2.c5" "t2.c6")
+	         FROM  (NAMED t2)
+		 WHERE (AND (BINOP "t2.c5" >= "t2.c4") (BINOP "t2.c5" <= "t2.c6"))) ["t3" (list "c4" "c5" "c6")]))
+
+(run qq)
+
+(define pull-up-subquery-1
+  (SELECT (VALS "t1.c1" "t1.c2" "t1.c3" "t3.c4" "t3.c5" "t3.c6")
+   FROM (JOIN 
+	  (NAMED t1) 
+	  (AS (SELECT  (VALS "t2.c4" "t2.c5" "t2.c6")
+	         FROM  (NAMED t2)
+		 WHERE (AND (BINOP "t2.c5" >= "t2.c4") (BINOP "t2.c5" <= "t2.c6"))) ["t3" (list "c4" "c5" "c6")]))
+   WHERE (BINOP "t1.c1" eq? "t3.c4")))
+
+(run pull-up-subquery-1)
+

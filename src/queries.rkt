@@ -109,4 +109,3 @@
 ;		  `((val-column-ref "t2.c2"))
 ;		  (query-rename (query-named table1) "t2" `("c1" "c2" "c3")))))))
 
-
