@@ -1,5 +1,4 @@
 #lang rosette                                                                                                                                                 
-
 (require "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
 
 (define (same q1 q2)

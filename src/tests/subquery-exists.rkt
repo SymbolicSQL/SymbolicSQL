@@ -20,9 +20,6 @@
     (list
       (cons (list 1 0 1) 8)))
 
-
-; (define sym-content (gen-sym-schema 3 5))
-
 (define sEmp (Table "Emp" (list "Name" "Emp" "Dept") (gen-sym-schema 3 2)))    
 (define sDept (Table "Dept" (list "Dept" "Mgr" "Loc") (gen-sym-schema 3 2)))    
 
@@ -35,7 +32,7 @@
 	FROM (NAMED Dept)
 	WHERE (AND (AND (BINOP 0 eq? "Dept.Mgr") (BINOP 1 eq? "Dept.Dept")) (BINOP "Dept.Loc" eq? 1))))
 
-(run subq)
+;; (run subq)
 
 (define q1
   (SELECT (VALS "Emp.Name")
