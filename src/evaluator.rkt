@@ -1,6 +1,7 @@
 #lang rosette
 
 (provide gen-sym-schema
+         sym-tab-constrain
          dedup
          dedup-accum
 	 projection
@@ -14,6 +15,9 @@
   (let ([gen-row (lambda (x)
                    (cons (map (lambda (x) (gen-sv)) (range num-col)) (gen-sv)))])
     (map gen-row (range num-row))))
+
+(define (sym-tab-constrain table)
+  (foldl && #t (map (lambda (p) (> (cdr p) 0)) table)))
 
 (define (dedup table)
   (cond

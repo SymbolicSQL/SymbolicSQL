@@ -14,6 +14,7 @@
 ; from-queries : a list of tables/subqueries
 ; where-filter : a filter
 (struct query-select (select-args from-query where-filter) #:transparent)
+(struct query-select-distinct (select-args from-query where-filter) #:transparent)
 (struct query-join (query1 query2) #:transparent)
 (struct query-named (table-ref) #:transparent)
 (struct query-rename (query table-name column-names) #:transparent)
@@ -62,8 +63,19 @@
                                                (Table-content ,from-table))))]
                     [new-name "dummy-name"]
                     [new-schema (,extract-schema ,query)])
-                (Table new-name new-schema (dedup-accum content))))))]))
-
+                (Table new-name new-schema (dedup-accum content))))))]
+    [(query-select-distinct? query)
+     (let ([args (query-select-distinct-select-args query)]
+           [from (query-select-distinct-from-query query)]
+           [where (query-select-distinct-where-filter query)])
+       `(lambda (e)
+          (let* ([result (,(denote-sql (query-select args from where) index-map) e)]
+                 [t-name (Table-name result)]
+                 [t-schema (Table-schema result)]
+                 [t-content (Table-content result)]
+                 [dedup-result (dedup t-content)])
+            (Table t-name t-schema dedup-result))))]))
+  
 ;; convert schema list to hash map (name -> index)           
 (define (list->hash l)
   (let ([h (make-hash)])
@@ -145,6 +157,10 @@
 (define-syntax-rule
   (SELECT v FROM q WHERE f)
   (query-select v q f))
+
+(define-syntax-rule
+  (SELECT-DISTINCT v FROM q WHERE f)
+  (query-select-distinct v q f))
 
 (define-syntax-rule
   (JOIN q1 q2)
