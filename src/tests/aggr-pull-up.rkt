@@ -40,6 +40,7 @@
 
 ; commutativity of selection query 2
 
+(assert (sym-tab-constrain (Table-content t1)))
 (define model (verify (same subq-aggr-1 subq-aggr-2)))
 (evaluate (Table-content t1) model)
 (evaluate (run subq-aggr-1) model)
