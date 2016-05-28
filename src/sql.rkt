@@ -149,6 +149,10 @@
   (query-select v q f))
 
 (define-syntax-rule
+  (SELECT-DISTINCT v FROM q WHERE f)
+  (query-select-distinct v q f))
+
+(define-syntax-rule
   (JOIN q1 q2)
   (query-join q1 q2))
 
