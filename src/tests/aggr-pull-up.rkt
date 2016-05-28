@@ -24,21 +24,25 @@
 
 (define subq-aggr-2
   (SELECT-DISTINCT (VALS "t1.c1" (AGGR aggr-sum
-			      (SELECT-DISTINCT (VALS (AGGR aggr-sum 
+				       (SELECT (VALS "t4.c3")
+			      		  FROM (AS (SELECT-DISTINCT (VALS "t2.c1" "t2.c2" (AGGR aggr-sum 
 						  (SELECT (VALS "t3.c3")
 						     FROM (AS (NAMED t1) ["t3" (list "c1" "c2" "c3")])
 						     WHERE (AND (BINOP "t3.c1" = "t2.c1") (BINOP "t3.c2" = "t2.c2")))))
 				 FROM (AS (NAMED t1) ["t2" (list "c1" "c2" "c3")])
-				 WHERE (BINOP "t2.c1" = "t1.c1"))))
+				 WHERE (BINOP "t2.c1" = "t1.c1")) ["t4" (list "c1" "c2" "c3")])
+					  WHERE (filter-empty))))
     FROM (NAMED t1)
     WHERE (filter-empty)))
 			      
-(define part-ag2 (SELECT-DISTICT (VALS "t2.c1" (AGGR aggr-sum 
+(define part-ag2 
+  (SELECT-DISTINCT (VALS "t2.c1" "t2.c2" 
+			(AGGR aggr-sum 
 			     (SELECT (VALS "t3.c3")
 				FROM (AS (NAMED t1) ["t3" (list "c1" "c2" "c3")])
 				WHERE (AND (BINOP "t3.c1" = "t2.c1") (BINOP "t3.c2" = "t2.c2")))))
-		 FROM (AS (NAMED t1) ["t2" (list "c1" "c2" "c3")])
-		WHERE (filter-empty)))
+	    FROM (AS (NAMED t1) ["t2" (list "c1" "c2" "c3")])
+	   WHERE (filter-empty)))
 
 (define part-ag22 (SELECT-DISTINCT (VALS "t2.c1" "t2.c2" "t2.c3")
 		 FROM (AS (NAMED t1) ["t2" (list "c1" "c2" "c3")])
