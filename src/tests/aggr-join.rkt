@@ -15,7 +15,7 @@
   (foldl + 0 (map (lambda (x) (* (car (car x)) (cdr x)))
        (get-content l))))
 
-(define subq-aggr
+(define subq-aggr-1
   (SELECT (VALS "R.A" (AGGR aggr-sum 
 			      (SELECT (VALS "S2.D")
 				 FROM (JOIN (AS (NAMED ta) ["R2" (list "A" "B")]) 
@@ -23,6 +23,14 @@
 				 WHERE (BINOP "R.A" = "R2.A"))))
      FROM (JOIN (NAMED ta) (NAMED tb))
      WHERE (BINOP "R.B" = "S.C")))
+
+(define part-subq-2 
+  (SELECT-DISTINCT (VALS "S.C" (AGGR aggr-sum
+				     (SELECT (VALS "S2.D")
+					FROM (AS (NAMED tb) ["S2" (list "C" "D")])
+				       WHERE (BINOP "S2.D" = "S.D"))))
+	      FROM (NAMED tb)
+	      WHERE (filter-empty)))
 
 (define subq-aggr-2
   (SELECT (VALS "R.A" (AGGR aggr-sum 
@@ -33,7 +41,7 @@
      FROM (JOIN (NAMED ta) (NAMED tb))
      WHERE (BINOP "R.B" = "S.C")))
 
-(run subq-aggr)
+(run part-subq-2)
 
 ; commutativity of selection query 1
 
