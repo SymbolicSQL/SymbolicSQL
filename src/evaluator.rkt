@@ -16,7 +16,7 @@
     (map gen-row (range num-row))))
 
 (define (dedup table)
-  (cond 
+  (cond
     [(equal? '() table) '()]
     [else 
       (let ([ele (car table)])

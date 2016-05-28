@@ -2,14 +2,10 @@
 
 (require "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
 
-(define content
-    (list
-      (cons (list 1 1 2) 2)
-      (cons (list 0 1 2) 2)                 
-      (cons (list 1 2 1) 1)
-      (cons (list 2 1 0) 3)))
+(define (same q1 q2)
+    (assert (bag-equal (get-content (run q1)) (get-content (run q2)))))
 
-(define t1 (Table "t1" (list "c1" "c2" "c3") content))
+(define t1 (Table "t1" (list "c1" "c2" "c3") (gen-sym-schema 3 3)))
 
 ; commutativity of selection query 1
 (define selection-commute-q1
@@ -26,7 +22,4 @@
 	       FROM   (NAMED t1)
                WHERE  (AND (BINOP "t1.c1" < "t1.c2") (BINOP "t1.c1" < "t1.c3"))))
 
-(run selection-commute-q1)
-(run selection-commute-q2)
-
-
+(verify (same selection-commute-q1 selection-commute-q2))
