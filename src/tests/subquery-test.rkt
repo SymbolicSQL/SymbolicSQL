@@ -11,7 +11,7 @@
     (SELECT (VALS "t1.c1" "t1.c2" "t1.c3" "t3.c4" "t3.c5" "t3.c6")
        FROM (JOIN (NAMED symbolic-t1) 
 		   (AS (SELECT  (VALS "t2.c4" "t2.c5" "t2.c6")
-			FROM  (NAMED symbolic-t2)				                     
+			FROM  (NAMED symbolic-t2)
 			WHERE (AND (BINOP "t2.c5" >= "t2.c4") (BINOP "t2.c5" <= "t2.c6"))) ["t3" (list "c4" "c5" "c6")]))
       WHERE (BINOP "t1.c1" eq? "t3.c4")))
 
