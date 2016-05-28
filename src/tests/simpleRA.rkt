@@ -1,9 +1,6 @@
 #lang rosette
 
-(require "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
-
-(define (same q1 q2)
-    (assert (bag-equal (get-content (run q1)) (get-content (run q2)))))
+(require "test-util.rkt" "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
 
 (define t1 (Table "t1" (list "c1" "c2" "c3") (gen-sym-schema 3 3)))
 

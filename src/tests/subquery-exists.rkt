@@ -1,20 +1,6 @@
 #lang rosette                                                                                                                                                 
 
-(require "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
-
-(define (same q1 q2)
-    (assert (bag-equal (get-content (run q1)) (get-content (run q2)))))
-
-(define (sv)
-     (define-symbolic* y integer?) ; creates a different constant when evaluated
-         y)
-
-(define content
-    (list
-      (cons (list 1 1 2) 2)
-      (cons (list 0 1 2) 2)                 
-      (cons (list 1 2 1) 1)
-      (cons (list 2 1 0) 3)))
+(require "test-util.rkt" "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
 
 (define acontent
     (list
@@ -25,8 +11,6 @@
 
 (define Emp (Table "Emp" (list "Name" "Emp" "Dept") acontent))    
 (define Dept (Table "Dept" (list "Dept" "Mgr" "Loc") acontent))    
-
-(define one-sv (sv))
 	    
 (define subq (SELECT (VALS "Dept.Dept")
 	FROM (NAMED Dept)
@@ -47,7 +31,8 @@
      FROM (JOIN (NAMED Emp) (NAMED Dept))
     WHERE (AND (BINOP "Emp.Dept" eq? "Dept.Dept") (AND (BINOP "Dept.Loc" eq? 1) (BINOP "Emp.Emp" eq? "Dept.Mgr")))))
 
-(run q1)
-(run q2)
+;; (run q1)
+;; (run q2)
 
+;; model expected
 (verify (same q1 q2))
