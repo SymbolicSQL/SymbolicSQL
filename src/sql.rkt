@@ -39,32 +39,42 @@
      `(lambda (e)
         (rename-table (,(denote-sql (query-rename-query query) index-map) e) ,(query-rename-table-name query)))]
     ; denote select query
-    [(or (query-select? query) (query-select-distinct? query))
-     (let ([dedup-func (if (query-select? query) dedup-accum dedup)])
+    [(query-select? query)
+     `(lambda (e)
+        ,(let* ([table (query-select-from-query query)]
+                [schema (extract-schema table)]
+                [name-hash (hash-copy index-map)])
+           (map (lambda (col-name idx)
+                  (hash-set! name-hash col-name (+ idx (hash-count index-map))))
+                schema (range (length schema)))
+           (let* ([from-clause (eval (denote-sql table index-map) ns)]
+                  [where-clause (eval (denote-filter
+                                       (query-select-where-filter query)
+                                       name-hash) ns)]
+                  [from-table `(,from-clause e)]
+                  [row-funcs (map (lambda (arg) (eval (denote-value arg name-hash) ns))
+                                  (query-select-select-args query))]
+                  [row-func-wrap (lambda (r)
+                                   (map (lambda (f) (f r))
+                                        row-funcs))])
+             `(let ([content (map (lambda (r) (cons (,row-func-wrap (car r)) (cdr r)))
+                                  (filter (lambda (r) (,where-clause (car r)))
+                                          (map (lambda (r) (cons (append e (car r)) (cdr r)))
+                                               (Table-content ,from-table))))]
+                    [new-name "dummy-name"]
+                    [new-schema (,extract-schema ,query)])
+                (Table new-name new-schema (dedup-accum content))))))]
+    [(query-select-distinct? query)
+     (let ([args (query-select-distinct-select-args query)]
+           [from (query-select-distinct-from-query query)]
+           [where (query-select-distinct-where-filter query)])
        `(lambda (e)
-          ,(let* ([table (query-select-from-query query)]
-                  [schema (extract-schema table)]
-                  [name-hash (hash-copy index-map)])
-             (map (lambda (col-name idx)
-                    (hash-set! name-hash col-name (+ idx (hash-count index-map))))
-                  schema (range (length schema)))
-             (let* ([from-clause (eval (denote-sql table index-map) ns)]
-                    [where-clause (eval (denote-filter
-                                         (query-select-where-filter query)
-                                         name-hash) ns)]
-                    [from-table `(,from-clause e)]
-                    [row-funcs (map (lambda (arg) (eval (denote-value arg name-hash) ns))
-                                    (query-select-select-args query))]
-                    [row-func-wrap (lambda (r)
-                                     (map (lambda (f) (f r))
-                                          row-funcs))])
-               `(let ([content (map (lambda (r) (cons (,row-func-wrap (car r)) (cdr r)))
-                                    (filter (lambda (r) (,where-clause (car r)))
-                                            (map (lambda (r) (cons (append e (car r)) (cdr r)))
-                                                 (Table-content ,from-table))))]
-                      [new-name "dummy-name"]
-                      [new-schema (,extract-schema ,query)])
-                  (Table new-name new-schema (,dedup-func content)))))))]))
+          (let* ([result (,(denote-sql (query-select args from where) index-map) e)]
+                 [t-name (Table-name result)]
+                 [t-schema (Table-schema result)]
+                 [t-content (Table-content result)]
+                 [dedup-result (dedup t-content)])
+            (Table t-name t-schema dedup-result))))]))
   
 ;; convert schema list to hash map (name -> index)           
 (define (list->hash l)
