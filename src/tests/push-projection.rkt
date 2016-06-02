@@ -5,8 +5,8 @@
 (define x (Table "x" (list "a" "k" "g") concrete-table-3-col))
 (define y (Table "y" (list "a" "k" "g") concrete-table-3-col))
 
-(define sx (Table "x" (list "a" "k" "g") (gen-sym-schema 3 3)))
-(define sy (Table "y" (list "a" "k" "g") (gen-sym-schema 3 3)))
+(define sx (Table "x" (list "a" "k" "g") (gen-sym-schema 3 num-rows-in-sym-table)))
+(define sy (Table "y" (list "a" "k" "g") (gen-sym-schema 3 num-rows-in-sym-table)))
 
 ; push projection query 1
 (define push-projection-q1
@@ -28,4 +28,4 @@
 ;(run push-projection-q1)
 ;(run push-projection-q2)
 ; Model expected
-(verify (same push-projection-q1 push-projection-q2))
+(time (verify (same push-projection-q1 push-projection-q2)))

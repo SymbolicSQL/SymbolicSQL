@@ -8,8 +8,11 @@
 
 
 ; (define t1 (Table "t1" (list "c1" "c2" "c3") (gen-sym-schema 3 3)))
-(define ta (Table "R" (list "A" "B") concrete-table-2-col))
-(define tb (Table "S" (list "C" "D") concrete-table-2-col))
+; (define ta (Table "R" (list "A" "B") concrete-table-2-col))
+; (define tb (Table "S" (list "C" "D") concrete-table-2-col))
+
+(define ta (Table "R" (list "A" "B") (gen-sym-schema 2 num-rows-in-sym-table)))
+(define tb (Table "S" (list "C" "D") (gen-sym-schema 2 num-rows-in-sym-table)))
 
 (define (aggr-sum l)
   (foldl + 0 (map (lambda (x) (* (car (car x)) (cdr x)))
@@ -41,11 +44,11 @@
      FROM (JOIN (NAMED ta) (AS part-subq-2 ["S3" (list "C" "D")]))
      WHERE (BINOP "R.B" = "S3.C")))
 
-(run subq-aggr-1)
-(run subq-aggr-2)
+;(run subq-aggr-1)
+;(run subq-aggr-2)
 
 ; commutativity of selection query 1
 
 ; commutativity of selection query 2
 
-;(verify (same selection-commute-q1 selection-commute-q2))
+(time (verify (same subq-aggr-1 subq-aggr-2)))

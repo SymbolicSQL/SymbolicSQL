@@ -7,7 +7,7 @@
 
 
 
-(define t1 (Table "t1" (list "c1" "c2" "c3") (gen-sym-schema 3 2)))
+(define t1 (Table "t1" (list "c1" "c2" "c3") (gen-sym-schema 3 num-rows-in-sym-table)))
 ; (define t1 (Table "t1" (list "c1" "c2" "c3") concrete-table-3-col))
 
 (define (aggr-sum l)
@@ -68,7 +68,7 @@
 ; commutativity of selection query 2
 
 (assert (sym-tab-constrain (Table-content t1)))
-(define model (verify (same subq-aggr-1 subq-aggr-2)))
+(define model (time (verify (same subq-aggr-1 subq-aggr-2))))
 (define model2 (verify (same subq-aggr-1 subq-aggr-wrong-2)))
 
 model

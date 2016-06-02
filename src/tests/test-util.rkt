@@ -1,8 +1,8 @@
 #lang rosette
 
-(require "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
+(require "args.rkt" "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
 
-(provide same concrete-table-3-col concrete-table-2-col)
+(provide same concrete-table-3-col concrete-table-2-col num-rows-in-sym-table)
 
 (define (same q1 q2)
     (assert (bag-equal (get-content (run q1)) (get-content (run q2)))))
