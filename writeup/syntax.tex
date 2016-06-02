@@ -19,8 +19,8 @@ aggregation and correlated subqueries.
         & \; \mid & \textbf{DISTINCT} \quad Query                \\
   Pred & ::= & Expr \quad \textbf{=} \quad Expr \\
        & \; \mid &  \textbf{NOT} \quad Pred      \\
-       & \; \mid & Pred \quad \textbf{AND} \quad Pred      \\ 
-       & \; \mid & Pred \quad \textbf{OR} \quad Pred \\
+       & \; \mid & \textbf{AND} \quad Pred \quad Pred      \\ 
+       & \; \mid & \textbf{OR} \quad Pred \quad Pred \\
        & \; \mid & false \\
        & \; \mid & true  \\
        & \; \mid & \textbf{EXISTS} \quad SQL \\
