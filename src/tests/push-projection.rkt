@@ -27,4 +27,5 @@
 ;(run inner-query)
 ;(run push-projection-q1)
 ;(run push-projection-q2)
+; Model expected
 (time (verify (same push-projection-q1 push-projection-q2)))

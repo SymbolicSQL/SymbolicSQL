@@ -1,2 +1,48 @@
 %!TEX root=writeup.tex
 \section{Syntax}
+
+Figure~\ref{tab:sql-syntax} shows the syntax of the DSL that we developed
+in Rosette \cite{rosette}. It is a SQL like functional language. The 
+translation from SQL to our DSL is straight forward. We support standard
+Select-Projection-Join (SPJ) SQL queries. In addition, we also support 
+aggregation and correlated subqueries. 
+
+\begin{figure}[t]
+\centering
+\[
+\begin{array}{llll}
+  Query & ::=  &  Table & \text{//input table} \\
+        & \; \mid & \textbf{SELECT} \quad Expr \quad \ldots \quad Expr \quad  Query      \\ 
+        & \; \mid  & \textbf{PRODUCT} \quad Query \quad Query        \\
+        & \; \mid & Query \quad \textbf{WHERE} \quad Pred        \\
+        & \; \mid & Query \quad \textbf{UNION ALL} \quad Query   \\
+        & \; \mid & \textbf{DISTINCT} \quad Query                \\
+  Pred & ::= & Expr \quad \textbf{=} \quad Expr \\
+       & \; \mid &  \textbf{NOT} \quad Pred      \\
+       & \; \mid & Pred \quad \textbf{AND} \quad Pred      \\ 
+       & \; \mid & Pred \quad \textbf{OR} \quad Pred \\
+       & \; \mid & false \\
+       & \; \mid & true  \\
+       & \; \mid & \textbf{EXISTS} \quad SQL \\
+  Expr & ::= & Column                     \\
+        & \; \mid & Literal                  \\
+        & \; \mid & function \quad Expr \ldots     \\
+        & \; \mid & aggregator \quad Query   \\  
+\end{array}
+\]
+\caption{SQL Syntax}
+\label{tab:sql-syntax}
+\end{figure}
+
+There are minor differences between the syntax of our DSL and SQL. Instead of using \textbf{FROM} keyword, we use \textbf{PRODUCT} as 
+a binary operator, and will be denoted to a cartesan product of 
+two relations. For example, the user of language needs to write 
+\textbf{(PRODUCT (PRODUCT a b) c)} instead of \textbf{FROM a, b, c}.  
+
+Our DSL can express aggregation query (query with \textbf{GROUP BY}) by
+using aggregation function over single-columned relation and correlated subqueries. This idea is firstly discovered by Buneman et. al \cite{comp_syntax}.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "writeup"
+%%% End:
