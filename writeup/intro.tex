@@ -1,2 +1,8 @@
-%! TEX root=writeup.tex
+%!TEX root=writeup.tex
 \section{Introduction}
+
+SQL or SQL-like declarative query languages are used in both relational and non-relational database management systems (RDBMS) for expressing queries. Due to the large volume of data stored in these database systems and the increasing demands of computation speed, optimizing SQL query is essential in modern data management task. 
+
+A desired query optimizer would take a parsed representation of a SQL query as input and return as output a SQL query such that it is semantically equivalent to the previous query with better performance. A common way of query optimization nowadays is by \emph{query-rewriting}, and the rewriting rules are proved by developers so that they are guaranteed to be semantically preserving. However, coming up with useful rewriting rules is highly non-trivial and error prone, and one of the reason is that SQL has relatively rich syntax. As a result, simple and easy-to-prove rules, like writing Select-Projection-Join (SPJ) queries are less effective while useful rewriting rules like Magic Set Rewrite or aggregation rewriting rules are less common and rather hard to proof.
+
+As as result, it is desirable to develop automatic verification techniques to reason about the correctness of SQL rewriting rules. 
