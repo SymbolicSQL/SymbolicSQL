@@ -5,7 +5,7 @@
 ;;(define (same q1 q2)
   ;;  (assert (bag-equal (get-content (run q1)) (get-content (run q2)))))
 
-(define t1 (Table "R" (list "c1" "c2" "c3") (gen-sym-schema 2 num-rows-in-sym-table)))
+(define t1 (Table "R" (list "A" "B") (gen-sym-schema 2 num-rows-in-sym-table)))
 (define ta (Table "R" (list "A" "B") concrete-table-2-col))
 
 (define self-join-1
