@@ -13,6 +13,7 @@
 *.cb2
 *.pdf
 *.bbl
+*.blg
 *.gz
 *.fdb_latexmk
 ./src/compile*

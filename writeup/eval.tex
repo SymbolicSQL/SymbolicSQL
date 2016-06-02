@@ -10,12 +10,22 @@ We mainly focused on three aspects in the evaluation:
 \end{itemize}
 
 \subsection{Proving Rewriting Rules on Bounded schema}
+Code Snippet XXX shows one of our rewriting rules. 
+SQL query equivalence with such level of complexity may be hard for a human being to 
+figure out, but the verifier can verify the equivalence of queries on a bounded-sized 
+schema within a reasnable amount of time.
+
 \subsection{Detecting Incorrect Rewriting Rules}
+Code Snippet XXX is an example of an incorrect SQL rewriting rule.
+When running these two SQL queries on our verifier, a counterexample will be returned that
+shows in which case the two queries are not equivalent.
+This functionality can be potentially useful for SQL query optimization validation.
+
 \subsection{Scalability of our Prototype}
 To illustrate the scalability of our prototype implementation, we evaluated
 6 rewriting rules with different symbolic schema sizes on a desktop PC
 ~\footnote{The PC has 3.60GHz Intel Core i7 CPU, and 8 GB of memeory}.
-Figure XXX shows the time it takes to verify the equivalence of SQL queries
+Figure~\ref{fig:scale} shows the time it takes to verify the equivalence of SQL queries
 with different symbolic schema sizes.
 
 \begin{figure}[!htb]

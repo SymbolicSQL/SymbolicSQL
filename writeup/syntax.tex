@@ -40,7 +40,12 @@ two relations. For example, the user of language needs to write
 \textbf{(PRODUCT (PRODUCT a b) c)} instead of \textbf{FROM a, b, c}.  
 
 Our DSL can express aggregation query (query with \textbf{GROUP BY}) by
-using aggregation function over single-columned relation and correlated subqueries. This idea is firstly discovered by Buneman et. al \cite{comp_syntax}.
+using aggregation function over single-columned relation and correlated subqueries. This idea is firstly discovered by Buneman et. al \cite{comp_syntax}. For example, \textbf{SELECT a, sum(b) FROM R} 
+is equivalent to \textbf{SELECT a, sum(SELECT b FROM R R1 WHERE R1.a = a ) FROM R}.
+
+In practice, we found this syntax is easy to use in term of expressing 
+rewriting rules. Translating existing rewriting rules from the database 
+literatures and query optimizers requires very little efforts.
 
 %%% Local Variables:
 %%% mode: latex
