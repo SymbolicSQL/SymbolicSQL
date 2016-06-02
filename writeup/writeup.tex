@@ -35,6 +35,35 @@
 \newcommand{\flyingbox}[1]{\begin{flushleft}\fbox{{#1}}\end{flushleft}}
 \newcommand{\concat}{\ensuremath{\!+\!\!\!\!+\!\,}}
 
+
+\definecolor{forestgreen}{RGB}{64,139,64}
+\lstdefinestyle{sql}{ % Define a style for your code snippet, multiple definitions can be made if, for example, you wish to insert multiple code snippets using different programming languages into one document
+%backgroundcolor=\color{highlight}, % Set the background color for the snippet - useful for highlighting
+language=sql,
+basicstyle=\footnotesize\ttfamily, % The default font size and style of the code
+breakatwhitespace=false, % If true, only allows line breaks at white space
+breaklines=true, % Automatic line breaking (prevents code from protruding outside the box)
+captionpos=b, % Sets the caption position: b for bottom; t for top
+commentstyle=\color[rgb]{0,0.6,0}, % Style of comments within the code - dark green courier font
+deletekeywords={VALUE, INPUT}, % If you want to delete any keywords from the current language separate them by commas
+%escapeinside={\%}, % This allows you to escape to LaTeX using the character in the bracket
+firstnumber=1, % Line numbers begin at line 1
+frame=none, % Frame around the code box, value can be: none, leftline, topline, bottomline, lines, single, shadowbox
+frameround=tttt, % Rounds the corners of the frame for the top left, top right, bottom left and bottom right positions
+keywordstyle=\color{forestgreen},
+morekeywords={}, % Add any functions no included by default here separated by commas
+numbers=left, % Location of line numbers, can take the values of: none, left, right
+numbersep=3pt, % Distance of line numbers from the code box
+numberstyle=\tiny\color[rgb]{0.5,0.5,0.5}, % Style used for line numbers
+rulecolor=\color{black}, % Frame border color
+showstringspaces=false, % Don't put marks in string spaces
+showtabs=false, % Display tabs in the code as lines
+stepnumber=0, % The step distance between line numbers, i.e. how often will lines be numbered
+tabsize=2, % Number of spaces per tab in the code
+backgroundcolor=\color{white}
+}
+\lstset{escapeinside={@}{@}}
+
 %for bussproofs abbreviation
 \EnableBpAbbreviations
 
