@@ -11,8 +11,8 @@ aggregation and correlated subqueries.
 \centering
 \[
 \begin{array}{llll}
-  Query & ::=  &  Table & \text{//input table} \\
-        & \; \mid & \textbf{SELECT} \quad Expr \quad \ldots \quad Expr \quad  Query      \\ 
+  Query & ::=  &  \mathit{Table} & \text{(Input table)} \\
+        & \; \mid & \textbf{SELECT} \quad \overline{Expr} \quad  Query      \\ 
         & \; \mid  & \textbf{PRODUCT} \quad Query \quad Query        \\
         & \; \mid & Query \quad \textbf{WHERE} \quad Pred        \\
         & \; \mid & Query \quad \textbf{UNION ALL} \quad Query   \\
