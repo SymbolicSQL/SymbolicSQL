@@ -14,6 +14,14 @@ SQL query equivalence with such level of complexity may be hard for a human bein
 figure out, but the verifier can verify the equivalence of queries on a bounded-sized 
 schema within a reasnable amount of time.
 
+\begin{figure}
+\begin{lstlisting}[style=sql]
+SELECT DINSTINCT a, b
+FROM R
+\end{lstlisting}
+\caption{Magic Set Rewrite}
+\end{figure}
+
 \paragraph{Detecting Incorrect Rewriting Rules}
 Code Snippet XXX is an example of an incorrect SQL rewriting rule.
 When running these two SQL queries on our verifier, a counterexample will be returned that
