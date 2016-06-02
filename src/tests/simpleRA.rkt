@@ -2,7 +2,7 @@
 
 (require "test-util.rkt" "../table.rkt" "../sql.rkt" "../evaluator.rkt" "../equal.rkt")
 
-(define t1 (Table "t1" (list "c1" "c2" "c3") (gen-sym-schema 3 3)))
+(define t1 (Table "t1" (list "c1" "c2" "c3") (gen-sym-schema 3 num-rows-in-sym-table)))
 
 ; commutativity of selection query 1
 (define push-selection-q1
@@ -19,4 +19,4 @@
 	       FROM   (NAMED t1)
                WHERE  (AND (BINOP "t1.c1" < "t1.c2") (BINOP "t1.c1" < "t1.c3"))))
 
-(verify (same push-selection-q1 push-selection-q2))
+(time (verify (same push-selection-q1 push-selection-q2)))

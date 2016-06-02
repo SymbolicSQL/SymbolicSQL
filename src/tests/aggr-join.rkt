@@ -11,8 +11,8 @@
 ; (define ta (Table "R" (list "A" "B") concrete-table-2-col))
 ; (define tb (Table "S" (list "C" "D") concrete-table-2-col))
 
-(define ta (Table "R" (list "A" "B") (gen-sym-schema 2 2)))
-(define tb (Table "S" (list "C" "D") (gen-sym-schema 2 2)))
+(define ta (Table "R" (list "A" "B") (gen-sym-schema 2 num-rows-in-sym-table)))
+(define tb (Table "S" (list "C" "D") (gen-sym-schema 2 num-rows-in-sym-table)))
 
 (define (aggr-sum l)
   (foldl + 0 (map (lambda (x) (* (car (car x)) (cdr x)))
@@ -51,4 +51,4 @@
 
 ; commutativity of selection query 2
 
-(verify (same subq-aggr-1 subq-aggr-2))
+(time (verify (same subq-aggr-1 subq-aggr-2)))
