@@ -1,51 +1,45 @@
 %!TEX root=writeup.tex
 \section{Syntax}
 
-Figure~\ref{tab:sql-syntax} shows the syntax of the DSL that we developed
-in Rosette \cite{rosette}. It is a SQL like functional language. The 
-translation from SQL to our DSL is straight forward. We support standard
-Select-Projection-Join (SPJ) SQL queries. In addition, we also support 
-aggregation and correlated subqueries. 
+Figure~\ref{tab:sql-syntax} shows the syntax of $\mathsf{CoreSQL}$, the DSL that we developed for verification. It models a core fraction of SQL that is easy to reason about while remains very expressive: besides supporting standard
+Select-Projection-Join (SPJ) SQL queries, we also support aggregation and correlated subqueries.  
 
 \begin{figure}[t]
 \centering
 \[
 \begin{array}{llll}
-  Query & ::=  &  \mathit{Table} & \text{(Input table)} \\
-        & \; \mid & \textbf{SELECT} \quad \overline{Expr} \quad  Query      \\ 
-        & \; \mid  & \textbf{PRODUCT} \quad Query \quad Query        \\
-        & \; \mid & Query \quad \textbf{WHERE} \quad Pred        \\
-        & \; \mid & Query \quad \textbf{UNION ALL} \quad Query   \\
-        & \; \mid & \textbf{DISTINCT} \quad Query                \\
-  Pred & ::= & Expr \quad \textbf{=} \quad Expr \\
-       & \; \mid &  \textbf{NOT} \quad Pred      \\
-       & \; \mid & \textbf{AND} \quad Pred \quad Pred      \\ 
-       & \; \mid & \textbf{OR} \quad Pred \quad Pred \\
+  \mathit{Query} & ::=  &  \mathit{Table} & \text{(Input table)} \\
+        & \; \mid & \mathbf{SELECT}~~\mathit{Expr}...~~\mathbf{FROM}~~\mathit{Query}      \\ 
+        & \; \mid  & \mathbf{PRODUCT}~~\mathit{Query}~~\mathit{Query}        \\
+        & \; \mid & \mathit{Query}~~\mathbf{WHERE}~\mathit{Pred}        \\
+        & \; \mid & \mathbf{DISTINCT}~~\mathit{Query}                \\
+  \mathit{Pred} & ::= & \mathit{Expr} ~ \mathbf{=}~\mathit{Expr} \\
+       & \; \mid &  \mathbf{NOT} ~~ \mathit{Pred}      \\
+       & \; \mid & \mathbf{AND} ~~ \mathit{Pred} ~~ \mathit{Pred}      \\ 
+       & \; \mid & \mathbf{OR} ~~ \mathit{Pred} ~~ \mathit{Pred} \\
        & \; \mid & false \\
        & \; \mid & true  \\
-       & \; \mid & \textbf{EXISTS} \quad SQL \\
-  Expr & ::= & Column                     \\
-        & \; \mid & Literal                  \\
-        & \; \mid & function \quad Expr \ldots     \\
-        & \; \mid & aggregator \quad Query   \\  
+       & \; \mid & \mathbf{EXISTS} ~~ SQL \\
+  \mathit{Expr} & ::= & \mathsf{column}                     \\
+        & \; \mid & \mathsf{literal}                  \\
+        & \; \mid & \mathsf{function}(\mathit{Expr}...)     \\
+        & \; \mid & \mathsf{aggregator}(\mathit{Query})  \\  
 \end{array}
 \]
-\caption{SQL Syntax}
+\caption{$\mathsf{CoreSQL}$ Syntax, where terminals $\mathsf{column}$ stands for column names from tables, $\mathsf{literal}$ stands for constants, $\mathsf{function}$ stands for $n$-nary operators that whose arguments are expressions and $\mathsf{aggregator}$ stands for aggregation functions.}
 \label{tab:sql-syntax}
 \end{figure}
 
-There are minor differences between the syntax of our DSL and SQL. Instead of using \textbf{FROM} keyword, we use \textbf{PRODUCT} as 
-a binary operator, and will be denoted to a cartesan product of 
-two relations. For example, the user of language needs to write 
-\textbf{(PRODUCT (PRODUCT a b) c)} instead of \textbf{FROM a, b, c}.  
+There are several differences between the syntax of $\mathsf{CoreSQL}$ and SQL. Instead of using \textbf{FROM} keyword, we use \textbf{PRODUCT} as a binary operator, and will be denoted to a cartesan product of two relations. For example, the user of language needs to write ``\lstinline[style=sql, keywords={}]{(PRODUCT (PRODUCT a b) c)}'' instead of ``\lstinline[style=sql, keywords={}]{FROM a, b, c}''.  
 
-Our DSL can express aggregation query (query with \textbf{GROUP BY}) by
-using aggregation function over single-columned relation and correlated subqueries. This idea is firstly discovered by Buneman et. al \cite{comp_syntax}. For example, \textbf{SELECT a, sum(b) FROM R} 
-is equivalent to \textbf{SELECT a, sum(SELECT b FROM R R1 WHERE R1.a = a ) FROM R}.
+Our DSL can express aggregation query (query with ``\lstinline[style=sql, keywords={}]{GROUP BY}'') by
+using aggregation function over single-columned relation and correlated subqueries. This idea is firstly discovered by Buneman et. al \cite{comp_syntax}. For example, ``\lstinline[style=sql, keywords={}]{SELECT a, sum(b) FROM R}'' 
+is equivalent to ``\lstinline[style=sql, keywords={}]{SELECT a, sum(SELECT b FROM R R1 WHERE R1.a = a) FROM R}''.
+
 
 In practice, we found this syntax is easy to use in term of expressing 
-rewriting rules. Translating existing rewriting rules from the database 
-literatures and query optimizers requires very little efforts.
+rewriting rules and easy to reason about. Particularly, translating SQL queries to $\mathsf{CoreSQL}$ queries is mostly straight forward, and existing rewriting rules from the database 
+literatures and query optimizers can be easily presented as two $\mathsf{CoreSQL}$ queries for us to reason about.
 
 %%% Local Variables:
 %%% mode: latex

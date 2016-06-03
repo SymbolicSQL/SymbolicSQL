@@ -1,6 +1,7 @@
 \documentclass[10pt]{article}
 \usepackage[pdftex]{graphicx}
 \usepackage{wrapfig}
+\usepackage{beramono}
 \usepackage{enumerate}
 \usepackage{hyperref}
 \usepackage{fullpage}
@@ -39,7 +40,7 @@
 \lstdefinestyle{sql}{ % Define a style for your code snippet, multiple definitions can be made if, for example, you wish to insert multiple code snippets using different programming languages into one document
 %backgroundcolor=\color{highlight}, % Set the background color for the snippet - useful for highlighting
 language=sql,
-basicstyle=\footnotesize\ttfamily, % The default font size and style of the code
+basicstyle=\ttfamily, % The default font size and style of the code
 breakatwhitespace=false, % If true, only allows line breaks at white space
 breaklines=true, % Automatic line breaking (prevents code from protruding outside the box)
 captionpos=b, % Sets the caption position: b for bottom; t for top
@@ -50,7 +51,7 @@ firstnumber=1, % Line numbers begin at line 1
 frame=none, % Frame around the code box, value can be: none, leftline, topline, bottomline, lines, single, shadowbox
 frameround=tttt, % Rounds the corners of the frame for the top left, top right, bottom left and bottom right positions
 keywordstyle=\color{forestgreen},
-morekeywords={}, % Add any functions no included by default here separated by commas
+morekeywords={PRODUCT}, % Add any functions no included by default here separated by commas
 numbers=left, % Location of line numbers, can take the values of: none, left, right
 numbersep=3pt, % Distance of line numbers from the code box
 numberstyle=\tiny\color[rgb]{0.5,0.5,0.5}, % Style used for line numbers
