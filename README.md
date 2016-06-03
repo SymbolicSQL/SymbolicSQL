@@ -2,9 +2,19 @@
 
 ## How to use?
 
-1. You need install [Racket](https://racket-lang.org/download/).
-2. Install rosette `raco pkg install rosette`
-3. Run `./src/run-tests.sh`
+### Install dependencies
+
+1. You need to install [Racket](https://racket-lang.org/download/).
+2. Install rosette `raco pkg install rosette`.
+
+### Write and verify your own rewriting rules
+
+Examples can be find in `./src/tests`, like `./src/tests/simpleRA.rkt`. 
+You need to write two SQL queries in our DSL and call `(verify (same q1 q2))`.
+
+### Run the scalability benchmark
+
+Run `./src/run-tests.sh`.
 
 
 ## Reference
