@@ -11,7 +11,7 @@ Select-Projection-Join (SPJ) SQL queries, we also support aggregation and correl
   \mathit{Query} & ::=  &  \mathsf{Table} \\
         & \; \mid & \mathbf{SELECT}~~\mathit{Expr}...~~\mathbf{FROM}~~\mathit{Query}      \\ 
         & \; \mid  & \mathbf{PRODUCT}~~\mathit{Query}~~\mathit{Query}        \\
-        & \; \mid & \mathit{Query}~~\mathbf{WHERE}~\mathit{Pred}        \\
+        & \; \mid & \mathit{Query}~\mathbf{WHERE}~\mathit{Pred}        \\
         & \; \mid & \mathbf{DISTINCT}~~\mathit{Query}                \\
   \mathit{Pred} & ::= & \mathit{Expr} ~ \mathbf{=}~\mathit{Expr} \\
        & \; \mid &  \mathbf{NOT} ~~ \mathit{Pred}      \\
