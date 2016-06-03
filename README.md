@@ -1,5 +1,12 @@
 # SymbolicSQL
 
+## How to use?
+
+1. You need install [Racket](https://racket-lang.org/download/).
+2. Install rosette `raco pkg install rosette`
+3. Run `./src/run-tests.sh`
+
+
 ## Reference
 1. [Query Reformulation with Constraints](http://homepages.inf.ed.ac.uk/libkin/dbtheory/alinlucianval.pdf). Alin Deutsch, et al.
 2. [Qex: Symbolic SQL Query Explorer](http://research.microsoft.com/pubs/131320/qex.pdf). Margus Veanes, et al.
