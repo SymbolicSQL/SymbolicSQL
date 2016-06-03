@@ -20,3 +20,5 @@
                WHERE  (AND (BINOP "t1.c1" < "t1.c2") (BINOP "t1.c1" < "t1.c3"))))
 
 (time (verify (same push-selection-q1 push-selection-q2)))
+
+(denote-sql push-selection-q2 (make-hash))

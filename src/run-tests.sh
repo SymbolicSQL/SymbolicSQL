@@ -1,9 +1,15 @@
 #!/bin/bash
 
+SED="sed -i"
+UNAME=`uname`
+if [[ "$UNAME" == "Darwin" ]]; then
+    SED='sed -i ""'
+fi
+
 function run_test {
     for i in `seq 1 $3`;
     do
-        sed -i "s/[0-9]/$i/" $2;
+        $SED "s/[0-9]/$i/" $2;
         for j in `seq 0 2`;
         do
             racket $1 | grep "cpu time" &

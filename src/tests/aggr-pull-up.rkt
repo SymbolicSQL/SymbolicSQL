@@ -75,6 +75,12 @@ model
 
 model2
 
+(evaluate t1 model2)
+(evaluate (run subq-aggr-1) model2)
+;(evaluate (run subq-aggr-wrong-2) model2)
+
+(denote-sql subq-aggr-1 (make-hash))
+
 ;(evaluate (Table-content t1) model)
 ;(evaluate (run subq-aggr-1) model)
 ;(evaluate (run subq-aggr-2) model)
