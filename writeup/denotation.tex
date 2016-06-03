@@ -17,7 +17,7 @@ Instead, environment is modeled as a list of integers, and a outer level query w
 \item \emph{Queries}: With the modeling of table and environment above, queries can then be represented as a Rosette function of type \code{Env -> Table}: it takes an environment as input (for outer-most queries, the environment is an empty list) and returns a table as output. Similarly, filters in $\mathsf{CoreSQL}$ queries are functions of type \code{env -> boolean} and values functions of type \code{env -> int} .
 \end{itemize}
 
-\paragraph{Denotation Rules} The denotation rules are presented in Figure~\ref{fig:denotation}. As mentioned above, each query is denoted into a Rosette function, and most denotation rules are straight forward. The most tricky one is the denotation rule for \code{Select} clause, and variable lookup: the former one requires us to compute variable bindings and the latter one requires us to correctly lookup value from the environment list.
+\paragraph{Denotation Rules} The denotation rules are presented in Figure~\ref{fig:denotation} (we use a constructor style representation of our syntax for pretty-formatting purpose). As mentioned above, each query is denoted into a Rosette function, and most denotation rules are straight forward. The most tricky one is the denotation rule for \code{Select} clause, and variable lookup: the former one requires us to compute variable bindings and the latter one requires us to correctly lookup value from the environment list.
 
 To handle this, we add a compile-time environment $\Phi$ to store the bindings between variables and their locations in the \code{env} list. When we encounter a variable look up as in $\llbracket \mathit{c};\Phi \rrbracket $, we will first look up the variable in $\Phi$ to identify its position $i$ in the environment and then generate a list reference call \code{(lookup e i)} to enable runtime access. On the other hand, as presented in the denotation rule for \code{select} clause, the hash map is updated to make sure that relative position of each column name is consistent with its position in the environment. In this way, we shift hash lookup into compile time, and we only need to reason about list reference in compiled program.
 
@@ -28,10 +28,14 @@ To handle this, we add a compile-time environment $\Phi$ to store the bindings b
 \llbracket \mathbf{join}(R_1,...,R_n);\Phi \rrbracket &\leadsto& \lambda e.(\llbracket R_1; \Phi\rrbracket~e)\times...\times(\llbracket R_n;\Phi\rrbracket~e)\\
 \llbracket \mathbf{select}(V, R, f);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{map}~(\lambda x.\llbracket V;\mathtt{update}(\Phi, x, \mathtt{schema}(R)) \rrbracket~ e\concat x)\\
 & & \qquad(\mathsf{filter}~(\lambda x.\llbracket f; \mathtt{update}(\Phi, x,\mathtt{schema}(R))\rrbracket~e\concat x)~ (\llbracket R;\Phi \rrbracket~e)))\\
+\llbracket \mathbf{select\code{-}distinct}(V, R, f);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{dedup} (\mathsf{map}~(\lambda x.\llbracket V;\mathtt{update}(\Phi, x, \mathtt{schema}(R))) \rrbracket~ e\concat x)\\
+& & \qquad(\mathsf{filter}~(\lambda x.\llbracket f; \mathtt{update}(\Phi, x,\mathtt{schema}(R))\rrbracket~e\concat x)~ (\llbracket R;\Phi \rrbracket~e)))\\
 \llbracket \mathbf{rename}(R, n, l);\Phi \rrbracket &\leadsto& \lambda e.(\llbracket R; \Phi\rrbracket~e)\\
 \\
  \llbracket \mathbf{and}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \land ... \land (\llbracket f_n;\Phi \rrbracket~e))\\
 \llbracket \mathbf{or}(f_1,...,f_n);\Phi \rrbracket &\leadsto& \lambda e.((\llbracket f_1;\Phi \rrbracket~e) \lor ... \lor (\llbracket f_n;\Phi \rrbracket~e))\\
+\llbracket \mathbf{not}(f);\Phi \rrbracket &\leadsto& \lambda e.(\mathsf{not}~(\llbracket f;\Phi \rrbracket~e))\\
+
 \llbracket\mathbf{exists}(R);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{not\_empty}~(\llbracket R;\Phi \rrbracket~e))\\
 \llbracket \mathbf{binop}(\mathit{op}, v_1, v_2);\Phi\rrbracket &\leadsto&  \lambda e.(\llbracket \mathit{op} \rrbracket~(\llbracket v_1;\Phi \rrbracket~e)~(\llbracket v_2;\Phi \rrbracket~e))\\
 \\
