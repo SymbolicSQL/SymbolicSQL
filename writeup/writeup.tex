@@ -74,7 +74,7 @@ backgroundcolor=\color{white}
 \begin{document}
 
 \title{Bounded Verification of SQL Rewriting Rules}
-\author{}
+\author{SymbolicSQL Team\footnote{Team members are Chenglong Wang, Shumo Chu, Kaiyuan Zhang}}
 \date{}
 \maketitle
 
@@ -83,6 +83,22 @@ backgroundcolor=\color{white}
 \input{syntax}
 \input{denotation}
 \input{eval}
+
+\section{Discussion}
+\paragraph{Limitations} Though our technique is able to formally reason about the correctness of transformation rules, there are still two limitations that make our tool less practical.
+\begin{itemize}
+\item \emph{Scalability}: Our technique does not scale well enough to verify symbolic inputs with bigger size (currently the bounded symbolic input table is 5 different symbolic rows and 5 columns).
+\item \emph{Table Schema Reasoning}: We didn't reason about table schema, and in practice, many useful rewriting rules are conditionally correct under certain schema constraints. And adding these features will make our tool more expressive to be able to capture more rewriting rules.
+\end{itemize} 
+
+\paragraph{Research Potential} Though our technique does not scale well with current SMT solver, there are still potential to make our tool practical with limited solver ability. And the key idea is to identify \emph{small model property}: if we cannot find a counter example with a symbolic input of with $m$ rows, we can prove that neither can we find a counter example with $n~(>m)$ symbolic rows, and thus we only need to verify the rewriting rule in a small symbolic input to ensure its correctness.
+
+For example, Given the following two queries, if we can verify that given a $t$ with 1 symbolic rows, we can prove that there is no table $t$ with more than 1 rows can result in a counter example.
+$$Q1: \code{SELECT t.a, t.b FROM t WHERE f1}$$
+$$Q2: \code{SELECT t.a, t.b FROM t WHERE f2}$$
+
+Thus, we believe that exploiting small model property on more complex SQL constructs will be the key to make our tool more practical.
+
 
 \bibliographystyle{plain}
 \bibliography{writeup}
