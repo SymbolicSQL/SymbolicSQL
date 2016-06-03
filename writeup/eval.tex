@@ -1,7 +1,7 @@
 %!TEX root=writeup.tex
 \section{Evaluation}
 \label{sec:eval}
-To evaluate the effectiveness of our tool in verfication of SQL rewrting rules, we collect 6 different types of SQL rewriting rules as our testing benchmark and evalute our tool on these 6 examples. And our evaluation goal is to answer the following three research quesionts.
+To evaluate the effectiveness of our tool in verfication of SQL rewrting rules, we collect 7 different types of SQL rewriting rules as our testing benchmark and evalute our tool on these 7 examples. And our evaluation goal is to answer the following three research quesionts.
 \begin{itemize}\itemsep0pt
 \item Whether our prototype can verify the correctness of rewriting rules.
 \item Whether our prototype can find erros in wrong rewrting rules.
@@ -23,7 +23,7 @@ SELECT DISTINCT R1.a, R1.b
 FROM R R1, R R1
 WHERE R1.a = R2.a AND R1.b = R2.b
 \end{lstlisting}
-\caption{Magic Set Rewrite}
+\caption{Magic Set Rewriting rule: this rewriting rule optimize out the self-join operation}
 \label{fig:magic}
 \end{figure}
 
@@ -36,7 +36,7 @@ This functionality can be potentially useful for SQL query optimization validati
 
 \begin{figure}[!htb]
 \begin{lstlisting}[style=sql,xleftmargin=.2\textwidth,mathescape=true]
-SELECT Emp.Name
+SELECT DISTINCT Emp.Name
 FROM Emp
 WHERE EXISTS 
   SELECT Dept.Dept
@@ -49,13 +49,14 @@ FROM Emp, Dept
 WHERE Emp.Dept = Dept.Dept AND Dept.Loc = 1 
       AND Emp.Emp = Dept.Mgr
 \end{lstlisting}
-\caption{Incorrect Rewrite (Should have DISTINCT in both queries)}
+\caption{An incorrect rewriting rule that tries to optimize out a sub query
+  (There is a missing DISTINCT in the second query)}
 \label{fig:push-proj}
 \end{figure}
 
 \paragraph{Scalability}
 To illustrate the scalability of our prototype implementation, we evaluated
-6 rewriting rules with different symbolic schema sizes on a desktop PC
+7 rewriting rules with different symbolic schema sizes on a desktop PC
 \footnote{The PC has 3.60GHz Intel Core i7 CPU, and 8 GB of memeory}.
 Figure~\ref{fig:scale} shows the time it takes to verify the equivalence of SQL queries
 with different symbolic schema sizes.
