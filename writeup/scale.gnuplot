@@ -13,6 +13,7 @@ set key center top inside
 plot "scale.dat" u 1:2 title 'SimpleRA' with linespoints lw 2.5 ps 1.5, \
      "scale.dat" u 1:3 title 'push-projection' with linespoints lw 2.5 ps 1.5, \
      "scale.dat" u 1:4 title 'subquery-exists' with linespoints lw 2.5 ps 1.5, \
-     "scale.dat" u 1:5 title 'aggr-pull-up' with linespoints lw 2.5 ps 1.5, \
-     "scale.dat" u 1:6 title 'subquery-test' with linespoints lw 2.5 ps 1.5, \
-     "scale.dat" u 1:7 title 'aggr-join' with linespoints lw 2.5 ps 1.5
+     "scale.dat" u 1:5 title 'magic-set' with linespoints lw 2.5 ps 1.5, \
+     "scale.dat" u 1:6 title 'aggr-pull-up' with linespoints lw 2.5 ps 1.5, \
+     "scale.dat" u 1:7 title 'subquery-test' with linespoints lw 2.5 ps 1.5, \
+     "scale.dat" u 1:8 title 'aggr-join' with linespoints lw 2.5 ps 1.5

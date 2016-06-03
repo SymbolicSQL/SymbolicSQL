@@ -1,6 +1,6 @@
-# num-rows simpleRA push-projection subquery-exists aggr-pull-up subquery-test aggr-join
-  1        57       47.6667         65.6667         50.6667      48            50.3333
-  2        108      184             92.6667         647.333      15861.3       36575.3
-  3        578.333  4142.67         2832            -            -             -
-  4        5406.67  40380.7         22607.3         -            -             -
+# num-rows simpleRA push-projection subquery-exists magic-set aggr-pull-up subquery-test aggr-join
+  1        57       47.6667         65.6667         33        50.6667      48            50.3333
+  2        108      184             92.6667         46        647.333      15861.3       36575.3
+  3        578.333  4142.67         2832            980       -            -             -
+  4        5406.67  40380.7         22607.3         31685     -            -             -
   
