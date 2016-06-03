@@ -7,8 +7,8 @@ Select-Projection-Join (SPJ) SQL queries, we also support aggregation and correl
 \begin{figure}[t]
 \centering
 \[
-\begin{array}{llll}
-  \mathit{Query} & ::=  &  \mathit{Table} & \text{(Input table)} \\
+\begin{array}{rcl}
+  \mathit{Query} & ::=  &  \mathsf{Table} \\
         & \; \mid & \mathbf{SELECT}~~\mathit{Expr}...~~\mathbf{FROM}~~\mathit{Query}      \\ 
         & \; \mid  & \mathbf{PRODUCT}~~\mathit{Query}~~\mathit{Query}        \\
         & \; \mid & \mathit{Query}~~\mathbf{WHERE}~\mathit{Pred}        \\
@@ -26,7 +26,7 @@ Select-Projection-Join (SPJ) SQL queries, we also support aggregation and correl
         & \; \mid & \mathsf{aggregator}(\mathit{Query})  \\  
 \end{array}
 \]
-\caption{$\mathsf{CoreSQL}$ Syntax, where terminals $\mathsf{column}$ stands for column names from tables, $\mathsf{literal}$ stands for constants, $\mathsf{function}$ stands for $n$-nary operators that whose arguments are expressions and $\mathsf{aggregator}$ stands for aggregation functions.}
+\caption{$\mathsf{CoreSQL}$ Syntax, where terminals $\mathsf{Table}$ stands for table reference,  $\mathsf{column}$ stands for column names from tables, $\mathsf{literal}$ stands for constants, $\mathsf{function}$ stands for $n$-nary operators that whose arguments are expressions and $\mathsf{aggregator}$ stands for aggregation functions.}
 \label{tab:sql-syntax}
 \end{figure}
 
@@ -37,7 +37,7 @@ using aggregation function over single-columned relation and correlated subqueri
 is equivalent to ``\lstinline[style=sql, keywords={}]{SELECT a, sum(SELECT b FROM R R1 WHERE R1.a = a) FROM R}''.
 
 
-In practice, we found this syntax is easy to use in term of expressing 
+In practice, we find this syntax is easy to use in term of expressing 
 rewriting rules and easy to reason about. Particularly, translating SQL queries to $\mathsf{CoreSQL}$ queries is mostly straight forward, and existing rewriting rules from the database 
 literatures and query optimizers can be easily presented as two $\mathsf{CoreSQL}$ queries for us to reason about.
 
