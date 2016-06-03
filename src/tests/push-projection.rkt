@@ -20,12 +20,11 @@
           FROM (JOIN (AS (SELECT (VALS "x.a" "x.k")
                                  FROM (NAMED sx)
                                  WHERE (filter-empty))
-                         ["x1" (list "a" "k" "g")])
+                         ["x1" (list "a" "k")])
                      (NAMED sy))
           WHERE (BINOP "x1.k" eq? "y.k")))
 
 ;(run inner-query)
 ;(run push-projection-q1)
 ;(run push-projection-q2)
-; Model expected
 (time (verify (same push-projection-q1 push-projection-q2)))
