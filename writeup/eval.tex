@@ -35,17 +35,21 @@ shows in which case the two queries are not equivalent.
 This functionality can be potentially useful for SQL query optimization validation.
 
 \begin{figure}[!htb]
-\begin{lstlisting}[style=sql,xleftmargin=.3\textwidth,mathescape=true]
-SELECT X.a
-FROM X, Y
-WHERE a.k = y.k
+\begin{lstlisting}[style=sql,xleftmargin=.2\textwidth,mathescape=true]
+SELECT Emp.Name
+FROM Emp
+WHERE EXISTS 
+  SELECT Dept.Dept
+  FROM Dept
+  WHERE Emp.Emp = Dept.Mgr AND Emp.Dept = Dept.Dept
+        AND Dept.Loc = 1
 $\equiv$
-SELECT X.a
-FROM (SELECT X.a as a, X.k as k
-      FROM X) X1, Y
-WHERE X1.k = Y.k
+SELECT Emp.Name
+FROM Emp, Dept
+WHERE Emp.Dept = Dept.Dept AND Dept.Loc = 1 
+      AND Emp.Emp = Dept.Mgr
 \end{lstlisting}
-\caption{Incorrect Rule: Push Down Projection Incorrectly}
+\caption{Incorrect Rewrite (Should have DISTINCT in both queries)}
 \label{fig:push-proj}
 \end{figure}
 
