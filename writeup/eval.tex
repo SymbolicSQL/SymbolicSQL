@@ -9,24 +9,45 @@ To evaluate the effectiveness of our tool in verfication of SQL rewrting rules, 
 \end{itemize}
 
 \paragraph{Proving Rewriting Rules on Bounded schema}
-Code Snippet XXX shows one of our rewriting rules. 
+Code Snippet in Figure~2 shows one of our rewriting rules. 
 SQL query equivalence with such level of complexity may be hard for a human being to 
 figure out, but the verifier can verify the equivalence of queries on a bounded-sized 
 schema within a reasnable amount of time.
 
 \begin{figure}
-\begin{lstlisting}[style=sql]
-SELECT DINSTINCT a, b
+\label{fig:magic}
+\begin{lstlisting}[style=sql,xleftmargin=.3\textwidth,mathescape=true]
+SELECT DISTINCT a, b
 FROM R
+$\equiv$
+SELECT DISTINCT R1.a, R1.b
+FROM R R1, R R1
+WHERE R1.a = R2.a AND R1.b = R2.b
 \end{lstlisting}
 \caption{Magic Set Rewrite}
 \end{figure}
 
 \paragraph{Detecting Incorrect Rewriting Rules}
-Code Snippet XXX is an example of an incorrect SQL rewriting rule.
+Code Snippet in Figure~3 is an example 
+of an incorrect SQL rewriting rule.
 When running these two SQL queries on our verifier, a counterexample will be returned that
 shows in which case the two queries are not equivalent.
 This functionality can be potentially useful for SQL query optimization validation.
+
+\begin{figure}
+\label{fig:push-proj}
+\begin{lstlisting}[style=sql,xleftmargin=.3\textwidth,mathescape=true]
+SELECT X.a
+FROM X, Y
+WHERE a.k = y.k
+$\equiv$
+SELECT X.a
+FROM (SELECT X.a as a, X.k as k
+      FROM X) X1, Y
+WHERE X1.k = Y.k
+\end{lstlisting}
+\caption{Incorrect Rule: Push Down Projection Incorrectly}
+\end{figure}
 
 \paragraph{Scalability}
 To illustrate the scalability of our prototype implementation, we evaluated
