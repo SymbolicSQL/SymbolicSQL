@@ -33,7 +33,7 @@ Select-Projection-Join (SPJ) SQL queries, we also support aggregation and correl
 There are several differences between the syntax of $\mathsf{CoreSQL}$ and SQL. Instead of using \textbf{FROM} keyword, we use \textbf{PRODUCT} as a binary operator, and will be denoted to a cartesan product of two relations. For example, the user of language needs to write ``\lstinline[style=sql, keywords={}]{(PRODUCT (PRODUCT a b) c)}'' instead of ``\lstinline[style=sql, keywords={}]{FROM a, b, c}''.  
 
 Our DSL can express aggregation query (query with ``\lstinline[style=sql, keywords={}]{GROUP BY}'') by
-using aggregation function over single-columned relation and correlated subqueries. This idea is firstly discovered by Buneman et. al \cite{comp_syntax}. For example, ``\lstinline[style=sql, keywords={}]{SELECT a, sum(b) FROM R}'' 
+using aggregation function over single-columned relation and correlated subqueries. This idea is firstly discovered by Buneman et. al \cite{comp_syntax}. For example, query ``\lstinline[style=sql, keywords={}]{SELECT a, sum(b) FROM R}'' 
 is equivalent to ``\lstinline[style=sql, keywords={}]{SELECT a, sum(SELECT b FROM R R1 WHERE R1.a = a) FROM R}''.
 
 
