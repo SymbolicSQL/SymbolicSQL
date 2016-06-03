@@ -1,11 +1,27 @@
 %!TEX root=writeup.tex
 
-\section{Denotation}
+\section{$\mathsf{CoreSQL}$ Denotation Semantics}
 
+In this section, we introduce the denotation semantics of $\mathsf{CoreSQL}$, where each $\mathsf{CoreSQL}$ query is denoted into a Rosette program, and we verify the equivalence of two queries by verifying the their corresponding denoted Rosette program. 
 
-\subsection{SQL to $\lambda$-calculus transformation}
+\paragraph{Target Language} 
 
+Before introducing denotation rules, we first introduce $\mathsf{CoreSQL}$ representations in Rosette. Concretely, we use the following Rosette constructs to represent queries.
+\begin{itemize}\itemsep0pt
+\item \emph{Table}: A table in Rosette is a value of type \code{list<pair<list<int>, int>}, and it is presented as a list of table rows, and each row is a pair, where the first element is a list of integers representing its content the the second element is a (non-negative) integer representing the repetitive number of the row in the table. For example, a table \code{(((1 2) . 2) ((2 5) . 3))} represents a 5 row table such that it contains two rows with content \code{(1 2)} and 3 rows with content \code{(2 5)}. Note that currently we only support integer tables and we can extend the row type to support more richer types including string, data etc.
 
+\item \emph{Environment}: In order to support subqueries, we need to model the environment of a query (i.e. what are the outer level values available in current query). Traditional ways to model the environment is by adding bindings (variable names and their run-time values): the bindings are created by outer level queries and inner level queries will simply look up bindings by name to find values at runtime. However, HashMaps are not supported in Rosette as they are challenging to reason about, and this representation will make it very challenging to verify Rosette program equivalence. 
+
+Instead, environment is modeled as a list of integers, and a outer level query will pass the list to inner level queries for value reference. As we will present later in denotation rules, we can pull up hash lookup into compile time and thus change runtime binding lookup to list reference, thus enable better verification performance.
+
+\item \emph{Queries}: With the modeling of table and environment above, queries can then be represented as a Rosette function of type \code{Env -> Table}: it takes an environment as input (for outer-most queries, the environment is an empty list) and returns a table as output. Similarly, filters in $\mathsf{CoreSQL}$ queries are functions of type \code{env -> boolean} and values functions of type \code{env -> int} .
+\end{itemize}
+
+\paragraph{Denotation Rules} The denotation rules are presented in Figure~\ref{fig:denotation}. As mentioned above, each query is denoted into a Rosette function, and most denotation rules are straight forward. The most tricky one is the denotation rule for \code{Select} clause, and variable lookup: the former one requires us to compute variable bindings and the latter one requires us to correctly lookup value from the environment list.
+
+To handle this, we add a compile-time environment $\Phi$ to store the bindings between variables and their locations in the \code{env} list. When we encounter a variable look up as in $\llbracket \mathit{c};\Phi \rrbracket $, we will first look up the variable in $\Phi$ to identify its position $i$ in the environment and then generate a list reference call \code{(lookup e i)} to enable runtime access. On the other hand, as presented in the denotation rule for \code{select} clause, the hash map is updated to make sure that relative position of each column name is consistent with its position in the environment. In this way, we shift hash lookup into compile time, and we only need to reason about list reference in compiled program.
+
+\begin{figure}[ht]
 \[
 \begin{array}{rcl}
  \llbracket T; \Phi  \rrbracket& \leadsto& \lambda e.T\\
@@ -19,7 +35,7 @@
 \llbracket\mathbf{exists}(R);\Phi \rrbracket &\leadsto& \lambda e. (\mathsf{not\_empty}~(\llbracket R;\Phi \rrbracket~e))\\
 \llbracket \mathbf{binop}(\mathit{op}, v_1, v_2);\Phi\rrbracket &\leadsto&  \lambda e.(\llbracket \mathit{op} \rrbracket~(\llbracket v_1;\Phi \rrbracket~e)~(\llbracket v_2;\Phi \rrbracket~e))\\
 \\
- \llbracket v_1,...,v_n;\Phi \rrbracket & \leadsto &\lambda e(\mathsf{list}~(\llbracket v_1;\Phi\rrbracket~e),...,(\llbracket v_n;\Phi\rrbracket~e)) \\
+ \llbracket v_1,...,v_n;\Phi \rrbracket & \leadsto &\lambda e. (\mathsf{list}~(\llbracket v_1;\Phi\rrbracket~e),...,(\llbracket v_n;\Phi\rrbracket~e)) \\
  \\
 \llbracket \mathit{const};\Phi \rrbracket & \leadsto & \lambda e.\mathit{const}\\
 \llbracket \mathit{c};\Phi \rrbracket & \leadsto & \lambda e. (\mathsf{lookup}~e~i)~~\textit{where $i=\Phi(c)$}\\
@@ -27,10 +43,13 @@
 \\
 \mathtt{schema}(T) & = & T.\mathit{schema}\\
 \mathtt{schema}(\mathbf{join}(R_1,...,R_n)) & = & \mathtt{schema}( R_1) \concat ...\concat \mathtt{schema}(R_n)\\
-\mathtt{schema}(\mathbf{select}(V, R, f))&=& [\textit{dummy},...,\textit{dummy}]\\
-\mathtt{schema}(\mathbf{rename}(R, \textit{name}, \bar{c})) &=& [\textit{name}.c_1,...,\textit{name}.c_n]\\
+\mathtt{schema}(\mathbf{select}(V, R, f))&=& [\mathit{dummy},...,\mathit{dummy}]\\
+\mathtt{schema}(\mathbf{rename}(R, \mathit{name}, \bar{c})) &=& [\mathit{name}.c_1,...,\mathit{name}.c_n]\\
 \end{array}
 \]
+\caption{Denotation semantics of $\mathsf{CoreSQL}$, where each $\mathsf{CoreSQL}$ queries is transformed to a Rosette function.}
+\label{fig:denotation}
+\end{figure}
 % \begin{center}
 % \AXC{}
 % \UIC{$\Sigma \vdash T \leadsto T$}
