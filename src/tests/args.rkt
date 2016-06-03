@@ -2,4 +2,4 @@
 
 (provide num-rows-in-sym-table)
 
-(define num-rows-in-sym-table 2)
+(define num-rows-in-sym-table 3)

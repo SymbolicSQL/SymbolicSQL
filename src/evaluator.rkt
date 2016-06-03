@@ -13,7 +13,7 @@
 
 (define (gen-sym-schema num-col num-row)
   (let ([gen-row (lambda (x)
-                   (cons (map (lambda (x) (gen-sv)) (range num-col)) (gen-sv)))])
+                   (cons (map (lambda (x) (gen-sv)) (range num-col)) 2))])
     (map gen-row (range num-row))))
 
 (define (sym-tab-constrain table)
