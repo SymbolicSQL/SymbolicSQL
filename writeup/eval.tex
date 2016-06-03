@@ -9,13 +9,12 @@ To evaluate the effectiveness of our tool in verfication of SQL rewrting rules, 
 \end{itemize}
 
 \paragraph{Proving Rewriting Rules on Bounded schema}
-Code Snippet in Figure~2 shows one of our rewriting rules. 
+Code Snippet in Figure~\ref{fig:magic} shows one of our rewriting rules. 
 SQL query equivalence with such level of complexity may be hard for a human being to 
 figure out, but the verifier can verify the equivalence of queries on a bounded-sized 
 schema within a reasnable amount of time.
 
-\begin{figure}
-\label{fig:magic}
+\begin{figure}[!htb]
 \begin{lstlisting}[style=sql,xleftmargin=.3\textwidth,mathescape=true]
 SELECT DISTINCT a, b
 FROM R
@@ -25,17 +24,17 @@ FROM R R1, R R1
 WHERE R1.a = R2.a AND R1.b = R2.b
 \end{lstlisting}
 \caption{Magic Set Rewrite}
+\label{fig:magic}
 \end{figure}
 
 \paragraph{Detecting Incorrect Rewriting Rules}
-Code Snippet in Figure~3 is an example 
+Code Snippet in Figure~\ref{fig:push-proj} is an example 
 of an incorrect SQL rewriting rule.
 When running these two SQL queries on our verifier, a counterexample will be returned that
 shows in which case the two queries are not equivalent.
 This functionality can be potentially useful for SQL query optimization validation.
 
-\begin{figure}
-\label{fig:push-proj}
+\begin{figure}[!htb]
 \begin{lstlisting}[style=sql,xleftmargin=.3\textwidth,mathescape=true]
 SELECT X.a
 FROM X, Y
@@ -47,6 +46,7 @@ FROM (SELECT X.a as a, X.k as k
 WHERE X1.k = Y.k
 \end{lstlisting}
 \caption{Incorrect Rule: Push Down Projection Incorrectly}
+\label{fig:push-proj}
 \end{figure}
 
 \paragraph{Scalability}
